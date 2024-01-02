@@ -11,6 +11,6 @@ export const ColumnWrapper = styled.div`
 
 export const GreyText = styled.h3`
   color: ${(props) => props.theme.colors.grey};
-  font-size: 18px;
+  font-size: 26px;
   margin: 0px;
 `;

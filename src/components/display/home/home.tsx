@@ -73,6 +73,7 @@ const NavigationTabs = styled(RowWrapper)`
   align-items: center;
   width: 100%;
   padding-bottom: 4px;
+  margin-bottom: 20px;
   border-bottom: 1px solid ${(props) => props.theme.colors.greyDarker};
   .selected {
     position: relative;

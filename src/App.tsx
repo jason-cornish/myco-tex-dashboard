@@ -10,6 +10,7 @@ import {
   Route,
   Link,
   useNavigate,
+  Navigate,
 } from "react-router-dom";
 import Home from "./components/display/home/home";
 import { getAscents } from "./data/ascents";
@@ -99,6 +100,7 @@ const App = () => {
             />
             <ContentWrapper>
               <Routes>
+                <Route path="/" element={<Navigate to="/home/mixer" />}></Route>
                 <Route path="home" element={<Home />}>
                   <Route path="steamer" element={<SteamerPage />}></Route>
                   <Route path="mixer" element={<MixerPage />}></Route>
