@@ -2,7 +2,7 @@ import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import Sidebar from "./components/sidebar/sidebar";
 import NavBar from "./components/navbar/navbar";
 import Display from "./components/display/search";
-import { getProfiles } from "./data/profiles";
+import { getProfile } from "./data/profiles";
 import React, { createContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
@@ -19,6 +19,8 @@ import SteamerPage from "./components/display/home/steamer/steamer-page";
 import MixerPage from "./components/display/home/mixer/mixer-page";
 import LabPage from "./components/display/home/lab/lab-page";
 import IncubatorPage from "./components/display/home/incubator/incubator-page";
+import SignUpPage from "./components/display/sign-up-page/sign-up-page";
+import LoginPage from "./components/display/login-page/login-page";
 
 const theme = {
   colors: {
@@ -55,7 +57,7 @@ export const DataContext = createContext<any>({} as any);
 const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("home");
-  const [profiles, setProfiles] = useState<{ [key: string]: any }>([]);
+  const [userProfile, setUserProfile] = useState<{ [key: string]: any }>([]);
   const [loading, setLoading] = useState(true);
   const [showGreyLayer, setShowGreyLayer] = useState(false);
   const [ascents, setAscents] = useState<AscentsType[]>([]);
@@ -63,14 +65,12 @@ const App = () => {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const loadedProfiles = await getProfiles();
-      setProfiles(loadedProfiles);
-      const loadedAscents: AscentsType[] = await getAscents();
-      setAscents(loadedAscents);
+      const userProfile = await getProfile();
+      setUserProfile(userProfile);
     };
     fetchData();
     setLoading(false);
-  }, [setProfiles, setLoading]);
+  }, [setUserProfile, setLoading]);
 
   return (
     <Router>
@@ -78,8 +78,8 @@ const App = () => {
         value={{
           searchQuery,
           setSearchQuery,
-          profiles,
-          setProfiles,
+          userProfile,
+          setUserProfile,
           loading,
           showGreyLayer,
           setShowGreyLayer,
@@ -101,11 +101,13 @@ const App = () => {
             <ContentWrapper>
               <Routes>
                 <Route path="/" element={<Navigate to="/home/mixer" />}></Route>
+                <Route path="sign-up" element={<SignUpPage />}></Route>
+                <Route path="login" element={<LoginPage />} />
                 <Route path="home" element={<Home />}>
                   <Route path="steamer" element={<SteamerPage />}></Route>
                   <Route path="mixer" element={<MixerPage />}></Route>
                   <Route path="lab" element={<LabPage />}></Route>
-                  <Route path="incubator" element={<IncubatorPage />}></Route>
+                  <Route path="incubation" element={<IncubatorPage />}></Route>
                 </Route>
               </Routes>
             </ContentWrapper>

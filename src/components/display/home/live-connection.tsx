@@ -8,7 +8,7 @@ type PropsType = {
 
 const LiveConection = (props: PropsType) => {
   return (
-    <LiveConnectionComponent>
+    <LiveConnectionComponent className="liveComponent">
       <PulsingCircle />
       <LiveText>Live Data</LiveText>
     </LiveConnectionComponent>

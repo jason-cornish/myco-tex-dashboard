@@ -42,7 +42,7 @@ const IncubatorBlueprint = (props: PropsType) => {
         <SubGreyText>Temp #4</SubGreyText>
       </TemperatureReading>
       <GreyText>Incubation Room</GreyText>
-      <PPMText>{liveData.co2}% CO2</PPMText>
+      <PPMText>{liveData.co2} PPM (CO2)</PPMText>
     </IncubatorWrapper>
   );
 };

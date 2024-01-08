@@ -3,13 +3,19 @@ import Button from "../../reusable/button";
 import { RowWrapper } from "../../reusable/styled-components";
 import { Icon } from "@blueprintjs/core";
 import JasonCompressed from "../../assets/JasonCompressed.jpg";
+import { useContext, useState } from "react";
+import ProfileDropdown from "./profile-dropdown";
+import { DataContext } from "../../App";
 
 const User = () => {
+  const { userProfile } = useContext(DataContext);
+  const [dropdownOpen, setDropdownOpen] = useState(true);
   return (
-    <UserWrapper>
+    <UserWrapper onClick={() => setDropdownOpen(!dropdownOpen)}>
       <ProfileImage src={JasonCompressed} className="profileImg" />
-      <h1>Jason Cornish</h1>
+      <h1>{userProfile.name}</h1>
       <Icon icon="caret-down" size={18} />
+      {dropdownOpen ? <ProfileDropdown /> : <div className="empty" />}
     </UserWrapper>
   );
 };
@@ -17,8 +23,10 @@ const User = () => {
 export default User;
 
 const UserWrapper = styled(RowWrapper)`
+  position: relative;
   align-items: center;
   justify-content: center;
+  transition: background-color 300ms ease-in-out;
   color: ${(props) => props.theme.colors.primaryWhite};
   background-color: ${(props) => props.theme.colors.primaryBlack};
   border: 1px solid ${(props) => props.theme.colors.primaryBlack};
@@ -48,6 +56,9 @@ const UserWrapper = styled(RowWrapper)`
     .bp5-icon {
       /* display: none; */
     }
+  }
+  .empty {
+    position: absolute;
   }
 `;
 

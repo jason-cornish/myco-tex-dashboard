@@ -60,7 +60,7 @@ const RegularButtonWrapper = styled(RowWrapper)`
 const FancyButtonWrapper = styled(RowWrapper)`
   align-items: center;
   justify-content: center;
-  height: 40px;
+  height: 50px;
   column-gap: 10px;
   border-radius: ${(props) => props.theme.other.borderRadius};
   /* border: 2px solid ${(props) => props.theme.colors.primaryWhite}; */
@@ -69,6 +69,7 @@ const FancyButtonWrapper = styled(RowWrapper)`
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
   p {
+    font-size: 16px;
     margin: 0px;
     color: ${(props) => props.theme.colors.secondaryBlack} !important;
   }
@@ -77,6 +78,6 @@ const FancyButtonWrapper = styled(RowWrapper)`
     padding-top: 3px;
   }
   :hover {
-    background-color: #00c07d;
+    background-color: #32cc97;
   }
 `;

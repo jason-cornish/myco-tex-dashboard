@@ -14,7 +14,7 @@ const MixerBlueprint = (props: PropsType) => {
   return (
     <MixerWrapper>
       <GreyText>Mixer</GreyText>
-      <DataText>{data.humidity}% Humidity</DataText>
+      <DataText>{data.humidity}% Soil Moisture</DataText>
     </MixerWrapper>
   );
 };
@@ -22,8 +22,8 @@ const MixerBlueprint = (props: PropsType) => {
 export default MixerBlueprint;
 
 const MixerWrapper = styled(ColumnWrapper)`
-  width: 300px;
-  height: 300px;
+  width: 325px;
+  height: 325px;
   background-color: ${(props) => props.theme.colors.highlight3};
   border-radius: ${(props) => props.theme.other.borderRadius};
   box-shadow: ${(props) => props.theme.other.boxShadow};

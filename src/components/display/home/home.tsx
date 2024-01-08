@@ -14,7 +14,7 @@ import { Link, Outlet, Route, Routes } from "react-router-dom";
 const Profile = () => {
   const { ascents, setAscents } = useContext(DataContext);
   const [selectedTab, setSelectedTab] = useState("Mixer");
-  const availableTabs = ["Mixer", "Steamer", "Lab", "Incubator"];
+  const availableTabs = ["Mixer", "Steamer", "Lab", "Incubation"];
 
   return (
     <HomeWrapper>

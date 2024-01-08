@@ -13,7 +13,7 @@ const LabBlueprint = (props: PropsType) => {
   const { liveData } = props;
   return (
     <LabWrapper>
-      <TemperatureReading className="one">
+      {/* <TemperatureReading className="one">
         <DataText>
           {liveData.temp1}
           {"\u00b0"}
@@ -40,9 +40,13 @@ const LabBlueprint = (props: PropsType) => {
           {"\u00b0"}
         </DataText>
         <SubGreyText>Temp #4</SubGreyText>
-      </TemperatureReading>
+      </TemperatureReading> */}
       <GreyText>Lab</GreyText>
-      <PPMText>{liveData.ppm} PPM</PPMText>
+      <PPMText>{liveData.ppm} PM2.5</PPMText>
+      <PPMText>
+        {liveData.temp1}
+        {"\u00b0"}
+      </PPMText>
     </LabWrapper>
   );
 };

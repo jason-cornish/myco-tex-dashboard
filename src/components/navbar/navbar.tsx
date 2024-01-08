@@ -1,14 +1,18 @@
 import { Icon } from "@blueprintjs/core";
 import styled from "styled-components";
 import { RowWrapper } from "../../reusable/styled-components";
-import LogAscent from "./log-ascent";
+import LogAscent from "./login-button";
 import SearchBar from "./searchbar";
 import User from "./user";
 import Button from "../../reusable/button";
 import LiveConection from "../display/home/live-connection";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { DataContext } from "../../App";
+import LoginButton from "./login-button";
+import SignUpButton from "./sign-up-button";
 
 const NavBar = () => {
+  const { userProfile } = useContext(DataContext);
   const [hasLiveConnection, setHasLiveConnection] = useState<boolean>(true);
   return (
     <Nav>
@@ -22,9 +26,15 @@ const NavBar = () => {
           setHasLiveConnection={setHasLiveConnection}
         />
       </LeftSection>
-
       <RightSection>
-        <User />
+        {userProfile.hasOwnProperty("name") ? (
+          <User />
+        ) : (
+          <RightSection>
+            <SignUpButton />
+            <LoginButton />
+          </RightSection>
+        )}
       </RightSection>
     </Nav>
   );
@@ -39,7 +49,7 @@ const Nav = styled(RowWrapper)`
   width: 100%;
   height: 70px;
   padding: 0px 20px;
-  z-index: 2;
+  z-index: 3;
   box-sizing: border-box;
   border-bottom-left-radius: 0px;
   justify-content: space-between;
@@ -49,6 +59,9 @@ const Nav = styled(RowWrapper)`
 
   @media only screen and (max-width: 850px) {
     background-color: ${(props) => props.theme.colors.primaryBlack};
+    .liveComponent {
+      display: none;
+    }
     top: 0px;
     /* .logo {
       display: none;
