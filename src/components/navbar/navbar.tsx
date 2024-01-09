@@ -18,7 +18,6 @@ const NavBar = () => {
     <Nav>
       <LeftSection>
         <Logo className="logo">
-          <Icon icon="dashboard" size={25} />
           <h1>MycoTex</h1>
         </Logo>
         <LiveConection

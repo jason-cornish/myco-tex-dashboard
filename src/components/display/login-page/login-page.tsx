@@ -154,6 +154,12 @@ const LoginPage = () => {
     navigate("/home");
   };
 
+  const handleClickDemo = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setUserProfile({ email: "demo@demo.com", name: "Demo User" });
+    navigate("/home");
+  };
+
   return (
     <LoginPageBackground>
       {/* <LogoWrapper>
@@ -228,13 +234,27 @@ const LoginPage = () => {
         {/* <p>
           Want to demo the application? <span>Login as demo user</span>
         </p> */}
-
-        <Button
-          type="fancy"
-          text="Login"
-          icon={<div />}
-          onClick={handleSubmit}
-        />
+        <ButtonsWrapper>
+          <Button
+            type="fancy"
+            text="Login"
+            icon={<div />}
+            color={false}
+            onClick={handleSubmit}
+          />
+          <OrWrapper>
+            <Line />
+            <p>or</p>
+            <Line />
+          </OrWrapper>
+          <Button
+            type="fancy"
+            text="Demo Session"
+            icon={<div />}
+            color={"#00a3c0"}
+            onClick={handleClickDemo}
+          />
+        </ButtonsWrapper>
       </FormWrapper>
     </LoginPageBackground>
   );
@@ -257,20 +277,19 @@ const LoginPageBackground = styled(ColumnWrapper)`
   left: 0px;
   color: ${(props) => props.theme.colors.primaryWhite};
   row-gap: 20px;
-  padding-top: 200px;
 `;
 
 const FormWrapper = styled(ColumnWrapper)`
-  position: absolute;
+  position: relative;
+  box-sizing: border-box;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
+  transform: translateY(-50%);
+  width: 350px;
   background-color: ${(props) => props.theme.colors.primaryBlack};
   border-radius: ${(props) => props.theme.other.borderRadius};
-  padding: 30px;
+  padding: 25px;
   box-shadow: ${(props) => props.theme.other.boxShadow};
-  row-gap: 25px;
+  row-gap: 20px;
   h1 {
     font-size: 28px;
   }
@@ -290,19 +309,24 @@ const FormWrapper = styled(ColumnWrapper)`
   }
 `;
 
-const LogoWrapper = styled(RowWrapper)`
-  column-gap: 10px;
+const ButtonsWrapper = styled(ColumnWrapper)`
+  row-gap: 15px;
+`;
+
+const OrWrapper = styled(RowWrapper)`
+  width: 100%;
   align-items: center;
-
-  h1 {
-    color: ${(props) => props.theme.colors.primaryWhite};
-    font-size: 36px;
+  column-gap: 10px;
+  p {
+    margin: 0px;
+    color: ${(props) => props.theme.colors.grey};
+    font-size: 16px;
   }
+`;
 
-  svg {
-    margin-top: 2px;
-    fill: ${(props) => props.theme.colors.primaryWhite};
-  }
+const Line = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.grey};
+  width: 48%;
 `;
 
 const InputWrapper = styled(ColumnWrapper)<PropsType>`
@@ -337,7 +361,7 @@ const InputWrapper = styled(ColumnWrapper)<PropsType>`
     border: 0px;
     color: ${(props) => props.theme.colors.primaryWhite};
     padding-left: 45px;
-    font-size: 18px;
+    font-size: 16px;
   }
   .emptyDiv {
     margin-top: -5px;

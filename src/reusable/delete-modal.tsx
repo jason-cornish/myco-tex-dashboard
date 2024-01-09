@@ -42,6 +42,7 @@ const DeleteModal = (props: PropsType) => {
                 setDisplayModal({ ...displayModal, deleteModal: false });
                 setShowGreyLayer(false);
               }}
+              color={false}
               type="fancy"
             />
             <Button
@@ -51,6 +52,7 @@ const DeleteModal = (props: PropsType) => {
                 setDisplayModal({ ...displayModal, deleteModal: false });
                 setShowGreyLayer(false);
               }}
+              color={false}
               type="regular"
             />
           </RowWrapper>

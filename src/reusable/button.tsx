@@ -8,10 +8,15 @@ type PropsType = {
   onClick: any;
   type: string;
   children?: any;
+  color: string | boolean;
+};
+
+type ColorProps = {
+  customColor: string | boolean;
 };
 
 const Button = (props: PropsType) => {
-  const { text, icon, onClick, type, children } = props;
+  const { text, icon, onClick, type, children, color } = props;
 
   return type === "regular" ? (
     <RegularButtonWrapper onClick={onClick} key="regular">
@@ -20,7 +25,7 @@ const Button = (props: PropsType) => {
       {children ? children : <div />}
     </RegularButtonWrapper>
   ) : (
-    <FancyButtonWrapper onClick={onClick} key="fancy">
+    <FancyButtonWrapper onClick={onClick} key="fancy" customColor={color}>
       {icon}
       {text ? <p>{text}</p> : <></>}
       {children ? children : <div />}
@@ -57,7 +62,7 @@ const RegularButtonWrapper = styled(RowWrapper)`
   }
 `;
 
-const FancyButtonWrapper = styled(RowWrapper)`
+const FancyButtonWrapper = styled(RowWrapper)<ColorProps>`
   align-items: center;
   justify-content: center;
   height: 50px;
@@ -65,8 +70,9 @@ const FancyButtonWrapper = styled(RowWrapper)`
   border-radius: ${(props) => props.theme.other.borderRadius};
   /* border: 2px solid ${(props) => props.theme.colors.primaryWhite}; */
   padding: 0px 15px;
-  background-color: ${(props) => props.theme.colors.highlight1};
-  transition: background-color 0.3s ease-in-out;
+  background-color: ${(props) =>
+    props.customColor ? props.customColor : props.theme.colors.highlight1};
+  transition: filter 0.3s ease-in-out;
   cursor: pointer;
   p {
     font-size: 16px;
@@ -78,6 +84,6 @@ const FancyButtonWrapper = styled(RowWrapper)`
     padding-top: 3px;
   }
   :hover {
-    background-color: #32cc97;
+    filter: brightness(120%);
   }
 `;

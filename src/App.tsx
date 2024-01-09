@@ -101,6 +101,10 @@ const App = () => {
             <ContentWrapper>
               <Routes>
                 <Route path="/" element={<Navigate to="/home/mixer" />}></Route>
+                <Route
+                  path="/home"
+                  element={<Navigate to="/home/mixer" />}
+                ></Route>
                 <Route path="sign-up" element={<SignUpPage />}></Route>
                 <Route path="login" element={<LoginPage />} />
                 <Route path="home" element={<Home />}>

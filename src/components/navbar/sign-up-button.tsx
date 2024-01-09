@@ -33,7 +33,7 @@ const SignUpWrapper = styled(Link)`
   }
   h1 {
     margin: 0px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
     color: ${(props) => props.theme.colors.primaryWhite};
     font-family: Roboto;

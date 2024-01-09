@@ -204,6 +204,12 @@ const SignUpPage = () => {
     navigate("/login");
   };
 
+  const handleClickDemo = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setUserProfile({ email: "demo@demo.com", name: "Demo User" });
+    navigate("/home");
+  };
+
   return (
     <SignUpPageBackground>
       {/* <LogoWrapper>
@@ -309,13 +315,28 @@ const SignUpPage = () => {
         {/* <p>
           Want to demo the application? <span>Login as demo user</span>
         </p> */}
+        <ButtonsWrapper>
+          <Button
+            type="fancy"
+            text="Sign Up"
+            icon={<div />}
+            color={false}
+            onClick={handleSubmit}
+          />
 
-        <Button
-          type="fancy"
-          text="Sign Up"
-          icon={<div />}
-          onClick={handleSubmit}
-        />
+          <OrWrapper>
+            <Line />
+            <p>or</p>
+            <Line />
+          </OrWrapper>
+          <Button
+            type="fancy"
+            text="Demo Session"
+            icon={<div />}
+            color={"#00a3c0"}
+            onClick={handleClickDemo}
+          />
+        </ButtonsWrapper>
       </FormWrapper>
     </SignUpPageBackground>
   );
@@ -338,20 +359,19 @@ const SignUpPageBackground = styled(ColumnWrapper)`
   left: 0px;
   color: ${(props) => props.theme.colors.primaryWhite};
   row-gap: 20px;
-  padding-top: 15%;
 `;
 
 const FormWrapper = styled(ColumnWrapper)`
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
+  transform: translateY(-50%);
+  box-sizing: border-box;
+  min-width: 350px;
   background-color: ${(props) => props.theme.colors.primaryBlack};
   border-radius: ${(props) => props.theme.other.borderRadius};
-  padding: 30px;
+  padding: 25px;
   box-shadow: ${(props) => props.theme.other.boxShadow};
-  row-gap: 25px;
+  row-gap: 20px;
   h1 {
     font-size: 28px;
   }
@@ -368,21 +388,6 @@ const FormWrapper = styled(ColumnWrapper)`
       text-decoration: underline;
       cursor: pointer;
     }
-  }
-`;
-
-const LogoWrapper = styled(RowWrapper)`
-  column-gap: 10px;
-  align-items: center;
-
-  h1 {
-    color: ${(props) => props.theme.colors.primaryWhite};
-    font-size: 36px;
-  }
-
-  svg {
-    margin-top: 2px;
-    fill: ${(props) => props.theme.colors.primaryWhite};
   }
 `;
 
@@ -418,11 +423,31 @@ const InputWrapper = styled(ColumnWrapper)<PropsType>`
     border: 0px;
     color: ${(props) => props.theme.colors.primaryWhite};
     padding-left: 45px;
-    font-size: 18px;
+    font-size: 16px;
   }
   .emptyDiv {
     margin-top: -5px;
   }
+`;
+
+const ButtonsWrapper = styled(ColumnWrapper)`
+  row-gap: 15px;
+`;
+
+const OrWrapper = styled(RowWrapper)`
+  width: 100%;
+  align-items: center;
+  column-gap: 10px;
+  p {
+    margin: 0px;
+    color: ${(props) => props.theme.colors.grey};
+    font-size: 16px;
+  }
+`;
+
+const Line = styled.div`
+  border: 1px solid ${(props) => props.theme.colors.grey};
+  width: 48%;
 `;
 
 const LeftIcon = styled.div`

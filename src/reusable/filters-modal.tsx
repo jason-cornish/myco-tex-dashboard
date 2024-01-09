@@ -49,6 +49,7 @@ const FiltersModal = (props: PropsType) => {
               icon={<Icon icon="cross" size={22} />}
               text={false}
               type="regular"
+              color={false}
               onClick={closeModal}
             />
           </RowWrapper>
