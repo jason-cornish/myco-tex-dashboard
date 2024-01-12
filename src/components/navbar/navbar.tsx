@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 import { DataContext } from "../../App";
 import LoginButton from "./login-button";
 import SignUpButton from "./sign-up-button";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const { userProfile } = useContext(DataContext);
@@ -17,7 +18,7 @@ const NavBar = () => {
   return (
     <Nav>
       <LeftSection>
-        <Logo className="logo">
+        <Logo className="logo" to="/home">
           <h1>MycoTex</h1>
         </Logo>
         <LiveConection
@@ -72,9 +73,10 @@ const Nav = styled(RowWrapper)`
   }
 `;
 
-const Logo = styled(RowWrapper)`
+const Logo = styled(Link)`
   column-gap: 12px;
   align-items: center;
+  text-decoration: none;
   .bp5-icon {
     fill: ${(props) => props.theme.colors.primaryWhite};
     margin-bottom: -5px;
