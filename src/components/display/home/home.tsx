@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { ColumnWrapper, RowWrapper } from "../../../reusable/styled-components";
 import JasonCompressed from "../../../assets/JasonCompressed.jpg";
@@ -9,12 +9,35 @@ import AscentsChartContainer from "./ascents-grades-chart/chart-wrapper";
 import ScatterChartContainer from "./scatter-plot/chart-wrapper";
 import { DataContext } from "../../../App";
 import LiveConection from "./live-connection";
-import { Link, Outlet, Route, Routes } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 const Profile = () => {
-  const { ascents, setAscents } = useContext(DataContext);
+  const navigate = useNavigate();
+  const { userProfile } = useContext(DataContext);
   const [selectedTab, setSelectedTab] = useState("Mixer");
   const availableTabs = ["Mixer", "Steamer", "Lab", "Incubation"];
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const tabNameFromPath = location.pathname.split("/")[2];
+    const uppercaseTabNameFromPath =
+      tabNameFromPath.charAt(0).toUpperCase() + tabNameFromPath.slice(1);
+    setSelectedTab(uppercaseTabNameFromPath);
+  }, [location]);
+
+  useEffect(() => {
+    if (!userProfile.hasOwnProperty("email") || !userProfile.email) {
+      navigate("/login");
+    }
+  }, [navigate, userProfile]);
 
   return (
     <HomeWrapper>
@@ -72,8 +95,7 @@ const NavigationTabs = styled(RowWrapper)`
   column-gap: 20px;
   align-items: center;
   width: 100%;
-  padding-bottom: 4px;
-  margin-bottom: 20px;
+  padding-bottom: 12px;
   border-bottom: 1px solid ${(props) => props.theme.colors.greyDarker};
   .selected {
     position: relative;
@@ -82,10 +104,10 @@ const NavigationTabs = styled(RowWrapper)`
       content: "";
       position: absolute;
       display: block;
-      bottom: -6px;
+      bottom: -13px;
       width: calc(100% + 10px);
       height: 5px;
-      left: -5px;
+      left: -4px;
       border-radius: ${(props) => props.theme.other.borderRadius};
       background-color: ${(props) => props.theme.colors.highlight1};
     }

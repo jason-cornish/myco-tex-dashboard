@@ -149,7 +149,6 @@ const LoginPage = () => {
       return;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     setUserProfile({ email: formState.email, name: "Fallen Oak Mycology" });
     navigate("/home");
   };

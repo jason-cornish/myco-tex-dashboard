@@ -3,7 +3,7 @@ import {
   ColumnWrapper,
   GreyText,
 } from "../../../../reusable/styled-components";
-import { LiveSteamerDataType } from "./types";
+import { LiveSteamerDataType } from "../types";
 
 type PropsType = {
   liveData: LiveSteamerDataType;

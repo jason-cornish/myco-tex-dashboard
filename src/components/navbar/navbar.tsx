@@ -21,10 +21,6 @@ const NavBar = () => {
         <Logo className="logo" to="/home">
           <h1>MycoTex</h1>
         </Logo>
-        <LiveConection
-          hasLiveConnection={hasLiveConnection}
-          setHasLiveConnection={setHasLiveConnection}
-        />
       </LeftSection>
       <RightSection>
         {userProfile.hasOwnProperty("name") ? (
