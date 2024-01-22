@@ -111,7 +111,7 @@ const RightColumnWrapper = styled(ColumnWrapper)`
 
 const Snapshot = styled.img`
   height: 500px;
-  width: 700px;
+  width: 650px;
   border-radius: ${(props) => props.theme.other.borderRadius};
 `;
 
