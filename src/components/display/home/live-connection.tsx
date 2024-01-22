@@ -10,7 +10,7 @@ const LiveConection = (props: PropsType) => {
   return (
     <LiveConnectionComponent className="liveComponent">
       <PulsingCircle />
-      <LiveText>Live Data</LiveText>
+      <LiveText>Live</LiveText>
     </LiveConnectionComponent>
   );
 };
@@ -20,11 +20,13 @@ export default LiveConection;
 const LiveConnectionComponent = styled(RowWrapper)`
   position: relative;
   column-gap: 5px;
+  align-items: center;
 `;
 
 const LiveText = styled.p`
   color: #d70040;
   margin: 0px;
+  margin-top: 2px;
 `;
 
 const PulsingCircle = styled.div`

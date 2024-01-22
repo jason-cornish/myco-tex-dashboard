@@ -21,6 +21,7 @@ import LabPage from "./components/display/home/lab/lab-page";
 import IncubatorPage from "./components/display/home/incubator/incubator-page";
 import SignUpPage from "./components/display/sign-up-page/sign-up-page";
 import LoginPage from "./components/display/login-page/login-page";
+import LandingPage from "./components/display/landing/landing-page";
 
 const theme = {
   colors: {
@@ -100,13 +101,14 @@ const App = () => {
             />
             <ContentWrapper>
               <Routes>
-                <Route path="/" element={<Navigate to="/home/mixer" />}></Route>
+                <Route path="/" element={<Navigate to="/landing" />}></Route>
                 <Route
                   path="/home"
                   element={<Navigate to="/home/mixer" />}
                 ></Route>
                 <Route path="sign-up" element={<SignUpPage />}></Route>
                 <Route path="login" element={<LoginPage />} />
+                <Route path="landing" element={<LandingPage />} />
                 <Route path="home" element={<Home />}>
                   <Route path="steamer" element={<SteamerPage />}></Route>
                   <Route path="mixer" element={<MixerPage />}></Route>

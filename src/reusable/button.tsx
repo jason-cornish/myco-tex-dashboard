@@ -42,7 +42,7 @@ const RegularButtonWrapper = styled(RowWrapper)`
   border-radius: ${(props) => props.theme.other.borderRadius};
   /* border: 2px solid ${(props) => props.theme.colors.primaryWhite}; */
   padding: 0px 15px;
-  height: 40px;
+  height: 50px;
   background-color: ${(props) => props.theme.colors.highlight3};
   transition: background-color 0.3s ease-in-out;
   .dropdown {

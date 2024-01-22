@@ -109,7 +109,7 @@ const IncubatorPage = () => {
 
   return (
     <IncubatorPageWrapper>
-      <SectionWrapper>
+      <SectionWrapper className="top">
         <SectionTitleWrapper>
           <SectionTitle>Live Incubation Data</SectionTitle>
           <LiveConection
@@ -143,6 +143,10 @@ export default IncubatorPage;
 
 const IncubatorPageWrapper = styled(ColumnWrapper)`
   row-gap: 25px;
+  padding-bottom: 50px;
+  .top {
+    margin-bottom: 40px;
+  }
 `;
 
 const ChartWrapper = styled(ColumnWrapper)`

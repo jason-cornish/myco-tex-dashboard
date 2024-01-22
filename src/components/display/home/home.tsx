@@ -35,7 +35,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!userProfile.hasOwnProperty("email") || !userProfile.email) {
-      navigate("/login");
+      navigate("/landing");
     }
   }, [navigate, userProfile]);
 
