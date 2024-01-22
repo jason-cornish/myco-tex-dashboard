@@ -89,6 +89,7 @@ const Wrapper = styled.div`
     width: 150px;
   }
   @media only screen and (max-width: 850px) {
+    display: none;
     position: fixed;
     width: 100%;
     top: auto;

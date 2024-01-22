@@ -61,7 +61,7 @@ export default LandingPage;
 const LandingPageWrapper = styled(RowWrapper)`
   position: fixed;
   height: fill-available;
-  width: 100%;
+  width: 100vw;
   z-index: 2;
   padding: 24vh 25px 25px 25px;
   justify-content: center;
@@ -71,15 +71,17 @@ const LandingPageWrapper = styled(RowWrapper)`
   left: 0px;
   color: ${(props) => props.theme.colors.primaryWhite};
   column-gap: 20px;
+  @media screen and (max-width: 1000px) {
+    padding-top: 100px;
+    align-items: center;
+    overflow-y: auto;
+  }
 `;
 
 const LeftColumnWrapper = styled(ColumnWrapper)`
   padding-top: 50px;
   width: 55%;
   max-width: 800px;
-  @media screen and (max-width: 1000px) {
-    width: 95%;
-  }
   row-gap: 20px;
   h1 {
     font-size: 45px;
@@ -89,6 +91,12 @@ const LeftColumnWrapper = styled(ColumnWrapper)`
     font-size: 16px;
     color: ${(props) => props.theme.colors.primaryWhite};
     line-height: 28px;
+  }
+  @media screen and (max-width: 1000px) {
+    overflow-y: visible;
+    position: relative;
+    padding-top: 0px;
+    width: 95%;
   }
 `;
 
@@ -102,8 +110,8 @@ const RightColumnWrapper = styled(ColumnWrapper)`
 `;
 
 const Snapshot = styled.img`
-  height: 600px;
-  width: 800px;
+  height: 500px;
+  width: 700px;
   border-radius: ${(props) => props.theme.other.borderRadius};
 `;
 
