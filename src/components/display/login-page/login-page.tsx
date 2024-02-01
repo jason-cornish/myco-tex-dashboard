@@ -5,8 +5,9 @@ import Button from "../../../reusable/button";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { DataContext } from "../../../App";
 import { useNavigate } from "react-router";
+import { sendLoginRequest } from "./send-login-request";
 
-type FormStateType = {
+export type FormStateType = {
   // companyName : {
   //   value : string;
   //   hasError : boolean;
@@ -28,7 +29,7 @@ type FormStateType = {
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { userProfile, setUserProfile } = useContext(DataContext);
+  const { userProfile, setUserProfile, APIURL } = useContext(DataContext);
   const [formState, setFormState] = useState<FormStateType>({
     // companyName: {
     //   value: "",
@@ -148,8 +149,21 @@ const LoginPage = () => {
       setFormState(stateCopy);
       return;
     }
-
-    setUserProfile({ email: formState.email, name: "Fallen Oak Mycology" });
+    const res: any = await sendLoginRequest(formState, APIURL);
+    if (res.hasOwnProperty("error")) {
+      return;
+    }
+    setUserProfile({
+      email: formState.email.value,
+      name: "Fallen Oak Mycology",
+      userID: res.user_id,
+      authToken: res.token,
+    });
+    localStorage.setItem("authToken", res.token);
+    localStorage.setItem("email", formState.email.value);
+    localStorage.setItem("name", "Fallen Oak Mycology");
+    localStorage.setItem("userID", res.user_id);
+    // setUserProfile({ email: formState.email, name: "Fallen Oak Mycology" });
     navigate("/home");
   };
 

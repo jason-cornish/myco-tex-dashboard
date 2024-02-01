@@ -12,6 +12,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/styled-components": "^5.1.26",
+    "axios": "^1.6.7",
     "firebase-tools": "^12.9.1",
     "highcharts": "^11.2.0",
     "highcharts-react-official": "^3.2.1",

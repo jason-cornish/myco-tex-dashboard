@@ -16,3 +16,8 @@ export type DropdownOption = {
   onClick: any;
   icon: string | boolean;
 };
+
+export type LiveReadingType = {
+  lastUpdated: number;
+  value: number;
+};

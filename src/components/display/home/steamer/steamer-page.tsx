@@ -104,10 +104,7 @@ const SteamerPage = () => {
       <SectionWrapper>
         <SectionTitleWrapper>
           <SectionTitle>Live Steamer Data</SectionTitle>
-          <LiveConection
-            hasLiveConnection={hasLiveConnection}
-            setHasLiveConnection={setHasLiveConnection}
-          />
+          <LiveConection hasLiveConnection={hasLiveConnection} />
         </SectionTitleWrapper>
         <SteamerBlueprint liveData={liveSteamerData} />
       </SectionWrapper>

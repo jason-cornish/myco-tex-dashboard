@@ -5,8 +5,9 @@ import Button from "../../../reusable/button";
 import { useCallback, useEffect, useState, useContext } from "react";
 import { DataContext } from "../../../App";
 import { useNavigate } from "react-router-dom";
+import { sendSignupRequest } from "./send-signup-request";
 
-type FormStateType = {
+export type FormStateType = {
   companyName: {
     value: string;
     hasError: boolean;
@@ -28,7 +29,7 @@ type FormStateType = {
 };
 
 const SignUpPage = () => {
-  const { userProfile, setUserProfile } = useContext(DataContext);
+  const { userProfile, setUserProfile, APIURL } = useContext(DataContext);
 
   const navigate = useNavigate();
 
@@ -57,7 +58,6 @@ const SignUpPage = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     inputKey: keyof FormStateType
   ) => {
-    console.log(formState);
     const stateCopy = { ...formState };
     stateCopy[inputKey].value = e.target.value;
     setFormState(stateCopy);
@@ -199,8 +199,8 @@ const SignUpPage = () => {
       setFormState(stateCopy);
       return;
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const res = await sendSignupRequest(formState, APIURL);
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     navigate("/login");
   };
 

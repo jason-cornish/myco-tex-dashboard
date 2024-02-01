@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { DataContext } from "../../../App";
 import { useContext } from "react";
 import LandingImage from "../../../assets/landingimage.png";
+import KeyFeaturesSection from "./key-features";
 
 const LandingPage = () => {
   const { setUserProfile } = useContext(DataContext);
@@ -17,60 +18,73 @@ const LandingPage = () => {
   };
   return (
     <LandingPageWrapper>
-      <LeftColumnWrapper>
-        <h1>Complete control over your mycelium growth conditions</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-          repellat beatae unde temporibus, aliquam dolor ratione eveniet a
-          quidem soluta minima quas odio repudiandae corporis repellendus. Saepe
-          dolor fugit ullam. Provident repellat beatae unde temporibus, aliquam
-          dolor ratione eveniet a quidem soluta minima quas odio repudiandae
-          corporis repellendus. Saepe dolor fugit ullam.
-        </p>
+      <CenteredDiv>
+        <SectionOne>
+          <LeftColumnWrapper>
+            <h1>Complete control over your mycelium growth conditions</h1>
+            <p>
+              MycoTex Monitoring Solutions is an advanced, comprehensive
+              monitoring system designed specifically for mushroom cultivation
+              facilities. This state-of-the-art system integrates a wide array
+              of sensors to continuously monitor and record crucial
+              environmental conditions, ensuring optimal growth conditions and
+              high yields.
+            </p>
+            <p>
+              Overall, MycoTex Monitoring Solutions offers a comprehensive,
+              customizable, and user-friendly system for mushroom cultivation
+              facilities, aiming to enhance productivity and ensure the highest
+              quality of mushroom production through meticulous environmental
+              monitoring and control.
+            </p>
 
-        <ButtonsWrapper>
-          <ButtonWrapper>
-            <Button
-              type="fancy"
-              text="Try demo"
-              onClick={handleClickDemo}
-              icon={false}
-              color=""
-            />
-          </ButtonWrapper>
-          <ButtonWrapper>
-            <Button
-              type="regular"
-              text="Sign up"
-              onClick={() => navigate("/sign-up")}
-              icon={false}
-              color=""
-            />
-          </ButtonWrapper>
-        </ButtonsWrapper>
-      </LeftColumnWrapper>
-      <RightColumnWrapper>
-        <Snapshot src={LandingImage} />
-      </RightColumnWrapper>
+            <ButtonsWrapper>
+              <ButtonWrapper>
+                <Button
+                  type="fancy"
+                  text="Try demo"
+                  onClick={handleClickDemo}
+                  icon={false}
+                  color=""
+                />
+              </ButtonWrapper>
+              <ButtonWrapper>
+                <Button
+                  type="regular"
+                  text="Sign up"
+                  onClick={() => navigate("/sign-up")}
+                  icon={false}
+                  color=""
+                />
+              </ButtonWrapper>
+            </ButtonsWrapper>
+          </LeftColumnWrapper>
+          <RightColumnWrapper>
+            <Snapshot src={LandingImage} />
+          </RightColumnWrapper>
+        </SectionOne>
+        <KeyFeaturesSection />
+      </CenteredDiv>
     </LandingPageWrapper>
   );
 };
 
 export default LandingPage;
 
-const LandingPageWrapper = styled(RowWrapper)`
-  position: fixed;
-  height: fill-available;
-  width: 100vw;
-  z-index: 2;
-  padding: 24vh 25px 25px 25px;
-  justify-content: center;
+const LandingPageWrapper = styled(ColumnWrapper)`
+  align-items: center;
+  left: -10px;
+  position: relative;
+  width: 100%;
+  z-index: 5;
+  overflow-y: auto;
+  padding: 100px 25px 25px 25px;
   box-sizing: border-box;
   background-color: ${(props) => props.theme.colors.secondaryBlack};
   top: 0px;
   left: 0px;
   color: ${(props) => props.theme.colors.primaryWhite};
-  column-gap: 20px;
+
   @media screen and (max-width: 1000px) {
     padding-top: 100px;
     align-items: center;
@@ -78,9 +92,27 @@ const LandingPageWrapper = styled(RowWrapper)`
   }
 `;
 
+const CenteredDiv = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1200px;
+  width: 100%;
+  row-gap: 75px;
+  column-gap: 15px;
+  @media only screen and (max-width: 850px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const SectionOne = styled(RowWrapper)`
+  column-gap: 20px;
+  max-width: 1000px;
+`;
+
 const LeftColumnWrapper = styled(ColumnWrapper)`
   padding-top: 50px;
-  width: 55%;
+  width: 70%;
   max-width: 800px;
   row-gap: 20px;
   h1 {
@@ -101,6 +133,7 @@ const LeftColumnWrapper = styled(ColumnWrapper)`
 `;
 
 const RightColumnWrapper = styled(ColumnWrapper)`
+  padding-top: 55px;
   position: relative;
   width: 35%;
   overflow-x: visible;
@@ -110,8 +143,8 @@ const RightColumnWrapper = styled(ColumnWrapper)`
 `;
 
 const Snapshot = styled.img`
-  height: 500px;
-  width: 650px;
+  width: 600px;
+  height: 470px;
   border-radius: ${(props) => props.theme.other.borderRadius};
 `;
 

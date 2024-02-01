@@ -3,7 +3,7 @@ import Sidebar from "./components/sidebar/sidebar";
 import NavBar from "./components/navbar/navbar";
 import Display from "./components/display/search";
 import { getProfile } from "./data/profiles";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -62,6 +62,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [showGreyLayer, setShowGreyLayer] = useState(false);
   const [ascents, setAscents] = useState<AscentsType[]>([]);
+  const APIURL = "http://localhost:3001";
 
   useEffect(() => {
     setLoading(true);
@@ -72,6 +73,21 @@ const App = () => {
     fetchData();
     setLoading(false);
   }, [setUserProfile, setLoading]);
+
+  const invalidateSession = useCallback((keysToReset: string[] | string) => {
+    if (Array.isArray(keysToReset)) {
+      keysToReset.forEach((key) => {
+        localStorage.removeItem(key);
+      });
+      setUserProfile({});
+      return;
+    } else if (keysToReset === "all") localStorage.removeItem("authToken");
+    localStorage.removeItem("email");
+    localStorage.removeItem("name");
+    localStorage.removeItem("userID");
+    setUserProfile({});
+    return;
+  }, []);
 
   return (
     <Router>
@@ -87,6 +103,8 @@ const App = () => {
           theme,
           ascents,
           setAscents,
+          APIURL,
+          invalidateSession,
         }}
       >
         <ThemeProvider theme={theme}>

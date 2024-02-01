@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { ColumnWrapper, RowWrapper } from "../../../reusable/styled-components";
 import JasonCompressed from "../../../assets/JasonCompressed.jpg";
@@ -17,12 +23,16 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import axios from "axios";
+
+export const HomeContext = createContext<any>({} as any);
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { userProfile } = useContext(DataContext);
+  const { userProfile, APIURL, invalidateSession } = useContext(DataContext);
   const [selectedTab, setSelectedTab] = useState("Mixer");
-  const availableTabs = ["Mixer", "Steamer", "Lab", "Incubation"];
+  const [reportDataAvailable, setReportDataAvailable] = useState(false);
+  const [availableTabs, setAvailableTabs] = useState({});
 
   const location = useLocation();
 
@@ -39,25 +49,103 @@ const Profile = () => {
     }
   }, [navigate, userProfile]);
 
+  const fetchFromAPI = useCallback(
+    async (options: any) => {
+      if (
+        !userProfile.hasOwnProperty("userID") ||
+        !userProfile.hasOwnProperty("authToken")
+      )
+        return false;
+      console.log(options);
+
+      const res = await axios(options)
+        .then((res) => {
+          console.log(res);
+          return res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.data === "Your auth token is invalid or expired") {
+            invalidateSession("all");
+          }
+          return false;
+        });
+      return res;
+    },
+    [userProfile, invalidateSession]
+  );
+
+  const generateAvailableRooms = useCallback((userReport: any) => {
+    let localAvailableTabs: any = {};
+    userReport.locations[0].rooms.forEach((room: any) => {
+      localAvailableTabs[room.room_title] = room;
+    });
+    return localAvailableTabs;
+  }, []);
+
+  useEffect(() => {
+    if (reportDataAvailable) setReportDataAvailable(false);
+    (async () => {
+      const options = {
+        url: `${APIURL}/api/report`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": userProfile.authToken,
+        },
+        // withCredentials: true,
+      };
+
+      const userReport: any = await fetchFromAPI(options);
+      if (userReport) {
+        if (userReport.locations[0].rooms.length) {
+          const localAvailableTabs = generateAvailableRooms(userReport);
+          setAvailableTabs(localAvailableTabs);
+          setReportDataAvailable(true);
+        }
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    fetchFromAPI,
+    APIURL,
+    userProfile,
+    generateAvailableRooms,
+    setAvailableTabs,
+    setReportDataAvailable,
+  ]);
+
   return (
     <HomeWrapper>
       <CenteredDiv>
         <NavigationTabs>
-          {availableTabs.map((tab) => {
-            return (
-              <TabText
-                to={`${tab.toLowerCase()}`}
-                className={selectedTab === tab ? "selected" : "unselected"}
-                onClick={() => {
-                  setSelectedTab(tab);
-                }}
-              >
-                {tab}
-              </TabText>
-            );
-          })}
+          {reportDataAvailable && Object.keys(availableTabs).length ? (
+            Object.keys(availableTabs).map((tab) => {
+              return (
+                <TabText
+                  to={`${tab.toLowerCase()}`}
+                  className={selectedTab === tab ? "selected" : "unselected"}
+                  onClick={() => {
+                    setSelectedTab(tab);
+                  }}
+                >
+                  {tab}
+                </TabText>
+              );
+            })
+          ) : (
+            <div />
+          )}
         </NavigationTabs>
-        <Outlet />
+        <HomeContext.Provider
+          value={{
+            availableTabs,
+            fetchFromAPI,
+            reportDataAvailable,
+          }}
+        >
+          {reportDataAvailable ? <Outlet /> : <div>Data unavailable</div>}
+        </HomeContext.Provider>
       </CenteredDiv>
     </HomeWrapper>
   );

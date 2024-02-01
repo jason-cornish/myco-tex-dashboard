@@ -112,10 +112,7 @@ const IncubatorPage = () => {
       <SectionWrapper className="top">
         <SectionTitleWrapper>
           <SectionTitle>Live Incubation Data</SectionTitle>
-          <LiveConection
-            hasLiveConnection={hasLiveConnection}
-            setHasLiveConnection={setHasLiveConnection}
-          />
+          <LiveConection hasLiveConnection={hasLiveConnection} />
         </SectionTitleWrapper>
         <IncubatorBlueprint liveData={liveIncubatorData} />
       </SectionWrapper>

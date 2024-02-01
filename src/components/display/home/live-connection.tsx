@@ -3,14 +3,19 @@ import { RowWrapper } from "../../../reusable/styled-components";
 
 type PropsType = {
   hasLiveConnection: boolean;
-  setHasLiveConnection: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const LiveConection = (props: PropsType) => {
-  return (
+  const { hasLiveConnection } = props;
+  return hasLiveConnection ? (
     <LiveConnectionComponent className="liveComponent">
       <PulsingCircle />
-      <LiveText>Live</LiveText>
+      <LiveText>LIVE</LiveText>
+    </LiveConnectionComponent>
+  ) : (
+    <LiveConnectionComponent>
+      <OfflineCircle />
+      <OfflineText>OFFLINE</OfflineText>
     </LiveConnectionComponent>
   );
 };
@@ -23,9 +28,23 @@ const LiveConnectionComponent = styled(RowWrapper)`
   align-items: center;
 `;
 
+const OfflineText = styled.p`
+  color: ${(props) => props.theme.colors.greyDarker};
+  margin: 0px;
+  margin-top: 2px;
+`;
+
 const LiveText = styled.p`
   color: #d70040;
   margin: 0px;
+  margin-top: 2px;
+`;
+
+const OfflineCircle = styled.div`
+  width: 15px;
+  height: 15px;
+  background-color: ${(props) => props.theme.colors.greyDarker};
+  border-radius: 50%;
   margin-top: 2px;
 `;
 
