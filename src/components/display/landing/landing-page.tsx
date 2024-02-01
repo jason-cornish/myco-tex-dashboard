@@ -73,14 +73,15 @@ export default LandingPage;
 
 const LandingPageWrapper = styled(ColumnWrapper)`
   align-items: center;
-  left: -10px;
-  position: relative;
+  left: 0px;
+  position: fixed;
   width: 100%;
   overflow-x: hidden;
   max-width: 100%;
-  z-index: 5;
+  height: 100vh;
+  z-index: 2;
   overflow-y: auto;
-  padding: 100px 25px 25px 25px;
+  padding: 100px 50px 25px 50px;
   box-sizing: border-box;
   background-color: ${(props) => props.theme.colors.secondaryBlack};
   top: 0px;
@@ -89,6 +90,11 @@ const LandingPageWrapper = styled(ColumnWrapper)`
 
   @media screen and (max-width: 1000px) {
     padding-top: 100px;
+    align-items: center;
+    overflow-y: auto;
+  }
+  @media screen and (max-width: 700px) {
+    padding: 100px 25px 25px 25px;
     align-items: center;
     overflow-y: auto;
   }
@@ -130,7 +136,7 @@ const LeftColumnWrapper = styled(ColumnWrapper)`
     overflow-y: visible;
     position: relative;
     padding-top: 0px;
-    width: 95%;
+    width: 100%;
   }
 `;
 

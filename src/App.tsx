@@ -64,6 +64,9 @@ const App = () => {
   const [ascents, setAscents] = useState<AscentsType[]>([]);
   const APIURL = "http://localhost:3001";
 
+  /*Runs when application is first opened, attempts to login user if previous session is still valid */
+  useEffect(() => {}, []);
+
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {

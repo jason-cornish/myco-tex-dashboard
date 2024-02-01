@@ -85,7 +85,7 @@ const KeyFeaturesWrapper = styled.div`
   padding: 50px;
   box-sizing: border-box;
   row-gap: 20px;
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 700px) {
     padding: 50px 20px;
   }
 `;
@@ -102,7 +102,7 @@ const SectionHeader = styled.header`
 
 const KeyFeatures = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   column-gap: 20px;
   row-gap: 20px;
 `;
