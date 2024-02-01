@@ -76,6 +76,8 @@ const LandingPageWrapper = styled(ColumnWrapper)`
   left: -10px;
   position: relative;
   width: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
   z-index: 5;
   overflow-y: auto;
   padding: 100px 25px 25px 25px;
