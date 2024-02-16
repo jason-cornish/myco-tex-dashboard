@@ -19,6 +19,7 @@
     "node": "^21.2.0",
     "nodemon": "^2.0.22",
     "react": "^18.2.0",
+    "react-cookie": "^7.0.2",
     "react-dom": "^18.2.0",
     "react-router": "^6.15.0",
     "react-router-dom": "^6.15.0",

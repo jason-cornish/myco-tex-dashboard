@@ -78,11 +78,11 @@ export default KeyFeaturesSection;
 const KeyFeaturesWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${(props) => props.theme.colors.primaryBlack};
-  border-radius: ${(props) => props.theme.other.borderRadius};
+  /* background-color: ${(props) => props.theme.colors.primaryBlack};
+  border-radius: ${(props) => props.theme.other.borderRadius}; */
   /* box-shadow: ${(props) => props.theme.other.boxShadow}; */
   width: 100%;
-  padding: 50px;
+  /* padding: 50px; */
   box-sizing: border-box;
   row-gap: 20px;
   @media screen and (max-width: 700px) {

@@ -11,36 +11,24 @@ type PropsType = {
 
 const SteamerBlueprint = (props: PropsType) => {
   const { liveData } = props;
+  const classes = ["one", "two", "three", "four"];
   return (
     <SteamerWrapper>
-      <TemperatureReading className="one">
-        <DataText>
-          {liveData.temp1}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #1</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="two">
-        <DataText>
-          {liveData.temp2}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #2</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="three">
-        <DataText>
-          {liveData.temp3}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #3</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="four">
-        <DataText>
-          {liveData.temp4}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #4</SubGreyText>
-      </TemperatureReading>
+      {Object.keys(liveData).length > 0 ? (
+        Object.keys(liveData).map((probe, i) => {
+          return (
+            <TemperatureReading className={classes[i]}>
+              <DataText>
+                {liveData[probe].measure}
+                {"\u00b0"}
+              </DataText>
+              <SubGreyText>Temp #{i + 1}</SubGreyText>
+            </TemperatureReading>
+          );
+        })
+      ) : (
+        <div />
+      )}
       <GreyText>Steamer</GreyText>
     </SteamerWrapper>
   );

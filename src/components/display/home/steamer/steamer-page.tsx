@@ -8,69 +8,24 @@ import {
   HistoricalDataType,
   LiveSteamerDataType,
 } from "../types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import SteamerBlueprint from "./steamer-blueprint";
 import LiveConection from "../live-connection";
 import Button from "../../../../reusable/button";
 import TemperatureTimeChart from "../charts/temps-over-time/temp-time-chart";
 import Dropdown from "../../../../reusable/dropdown";
+import SteamerLive from "./steamer-live";
+import { DataContext } from "../../../../App";
+import { HomeContext } from "../home";
+import { useFetch } from "../../../../hooks/useFetch";
+import { getMeasurementFromRawData } from "../helper-functions/getMeasurementsFromRawData";
 
 const SteamerPage = () => {
-  const [hasLiveConnection, setHasLiveConnection] = useState(true);
-  const [historicalData, setHistoricalData] = useState<HistoricalDataType>([
-    { name: "Temp #1", color: "#93C572", data: [] },
-    { name: "Temp #2", color: "#a472c5", data: [] },
-  ]);
+  const { userProfile, APIURL } = useContext(DataContext);
+  const { availableTabs, fetchFromAPI, reportDataAvailable } =
+    useContext(HomeContext);
   const [historicalTimeRange, setHistoricalTimeRange] =
     useState<string>("24 hours");
-  const liveSteamerData: LiveSteamerDataType = useMemo(() => {
-    return {
-      temp1: 180,
-      temp2: 180,
-      temp3: 175,
-      temp4: 183,
-    };
-  }, []);
-
-  const fetchHistoricalData = useCallback(() => {
-    const fetchedHistoricalData = [
-      {
-        name: "Temp #1",
-        color: "#93C572",
-        data: [
-          [1253453834, 70],
-          [1332648499, 89],
-          [1402658481, 89],
-          [1512658481, 89],
-          [1653516428, 70],
-          [1702658481, 89],
-          [1802658481, 89],
-          [1912658481, 89],
-        ],
-      },
-      {
-        name: "Temp #2",
-        color: "#a472c5",
-        data: [
-          [1253453834, 71],
-          [1702658481, 91],
-          [1902658481, 91],
-        ],
-      },
-    ];
-    setHistoricalData(fetchedHistoricalData);
-  }, [historicalTimeRange]);
-
-  useEffect(() => {
-    fetchHistoricalData();
-  }, [fetchHistoricalData]);
-
-  const chartOptions = useMemo(() => {
-    return {
-      options: { yAxisType: "temperature" },
-      data: historicalData,
-    };
-  }, [historicalData]);
 
   const handleClickOption: any = (value: string, stateName?: string) => {
     setHistoricalTimeRange(value);
@@ -99,15 +54,53 @@ const SteamerPage = () => {
     },
   ];
 
+  const options = useMemo(() => {
+    return {
+      historicalOptions: {
+        url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/true`,
+        method: "GET",
+        headers: {
+          "x-access-token": userProfile.authToken,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      },
+    };
+  }, [APIURL, userProfile.authToken, availableTabs]);
+
+  const {
+    data: historicalData,
+    dataError: historicalDataError,
+    dataLoading: historicalDataLoading,
+  } = useFetch(options.historicalOptions, false);
+
+  const chartOptions = useMemo(() => {
+    const returnValue = {
+      options: { yAxisType: "temp" },
+      data: [],
+    };
+    if (!historicalDataLoading && !historicalDataError) {
+      console.log(historicalData);
+      const parsedData = getMeasurementFromRawData(historicalData, {
+        includeHistorical: true,
+        probeTypes: ["temp"],
+      });
+      console.log(parsedData);
+      returnValue.data = parsedData;
+    }
+    return returnValue;
+  }, [historicalData, historicalDataError, historicalDataLoading]);
+
   return (
     <SteamerPageWrapper>
-      <SectionWrapper>
+      <SteamerLive />
+      {/* <SectionWrapper>
         <SectionTitleWrapper>
           <SectionTitle>Live Steamer Data</SectionTitle>
           <LiveConection hasLiveConnection={hasLiveConnection} />
         </SectionTitleWrapper>
         <SteamerBlueprint liveData={liveSteamerData} />
-      </SectionWrapper>
+      </SectionWrapper> */}
 
       {/* <Button
         type="fancy"

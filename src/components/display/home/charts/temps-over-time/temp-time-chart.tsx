@@ -1,8 +1,9 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useContext, useState } from "react";
+import { memo, useContext, useState } from "react";
 import styled from "styled-components";
 import { DataContext } from "../../../../../App";
+import { useChartDataFormatter } from "../../../../../hooks/useChartDataFormatter";
 
 type PropsType = {
   chartOptions: {
@@ -17,9 +18,16 @@ type PropsType = {
   };
 };
 
-const TemperatureTimeChart = (props: PropsType) => {
+const TemperatureTimeChart = memo((props: PropsType) => {
   const { theme } = useContext(DataContext);
   const { chartOptions } = props;
+  console.log(chartOptions);
+  const chartData = useChartDataFormatter(
+    chartOptions.data,
+    chartOptions.options.yAxisType.toLowerCase()
+  );
+
+  console.log(chartData);
 
   function buildDateTimeLabels(input: {
     value: number;
@@ -111,7 +119,7 @@ const TemperatureTimeChart = (props: PropsType) => {
     value: number;
     tickPositionInfo: { unitName: string };
   }) {
-    if (chartOptions.options.yAxisType === "temperature") {
+    if (chartOptions.options.yAxisType === "temp") {
       return `<span>
       ${input.value}${"\u00b0"}
     </span>`;
@@ -203,15 +211,17 @@ const TemperatureTimeChart = (props: PropsType) => {
         color: theme.colors.primaryWhite,
       },
     },
-    series: chartOptions.data,
+    series: chartData,
   };
+
+  console.log(chartData);
 
   return (
     <ChartWrapper>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </ChartWrapper>
   );
-};
+});
 
 export default TemperatureTimeChart;
 

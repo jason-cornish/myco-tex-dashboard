@@ -1,4 +1,3 @@
 export type LiveLabDataType = {
-  temp1: number | boolean;
-  ppm: number | boolean;
+  [key: string]: any;
 };

@@ -9,6 +9,7 @@ import { LiveIncubatorDataType } from "./types";
 import LiveConection from "../live-connection";
 import TemperatureTimeChart from "../charts/temps-over-time/temp-time-chart";
 import { HistoricalDataType } from "../types";
+import IncubatorLive from "./incubator-live";
 
 const IncubatorPage = () => {
   const [hasLiveConnection, setHasLiveConnection] = useState(true);
@@ -95,7 +96,7 @@ const IncubatorPage = () => {
 
   const tempChartOptions = useMemo(() => {
     return {
-      options: { yAxisType: "temperature" },
+      options: { yAxisType: "temp" },
       data: historicalTempData,
     };
   }, [historicalTempData]);
@@ -109,13 +110,7 @@ const IncubatorPage = () => {
 
   return (
     <IncubatorPageWrapper>
-      <SectionWrapper className="top">
-        <SectionTitleWrapper>
-          <SectionTitle>Live Incubation Data</SectionTitle>
-          <LiveConection hasLiveConnection={hasLiveConnection} />
-        </SectionTitleWrapper>
-        <IncubatorBlueprint liveData={liveIncubatorData} />
-      </SectionWrapper>
+      <IncubatorLive />
       <SectionWrapper>
         <SectionTitleWrapper>
           <SectionTitle>Temperatures Over Time</SectionTitle>

@@ -42,9 +42,9 @@ const LabBlueprint = (props: PropsType) => {
         <SubGreyText>Temp #4</SubGreyText>
       </TemperatureReading> */}
       <GreyText>Lab</GreyText>
-      <PPMText>{liveData.ppm} PM2.5</PPMText>
+      <PPMText>{liveData.ppm ? liveData.ppm.measure : "?"} PM2.5</PPMText>
       <PPMText>
-        {liveData.temp1}
+        {liveData.temp ? liveData.temp.measure : "?"}
         {"\u00b0"}
       </PPMText>
     </LabWrapper>

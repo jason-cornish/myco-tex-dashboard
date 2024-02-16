@@ -56,11 +56,11 @@ const Profile = () => {
         !userProfile.hasOwnProperty("authToken")
       )
         return false;
-      console.log(options);
+      // console.log(options);
 
       const res = await axios(options)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           return res.data;
         })
         .catch((error) => {

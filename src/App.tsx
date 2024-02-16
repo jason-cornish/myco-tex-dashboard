@@ -22,6 +22,7 @@ import IncubatorPage from "./components/display/home/incubator/incubator-page";
 import SignUpPage from "./components/display/sign-up-page/sign-up-page";
 import LoginPage from "./components/display/login-page/login-page";
 import LandingPage from "./components/display/landing/landing-page";
+import { useCookies } from "react-cookie";
 
 const theme = {
   colors: {
@@ -56,16 +57,39 @@ const theme = {
 export const DataContext = createContext<any>({} as any);
 
 const App = () => {
+  const [cookies] = useCookies(["x-refresh-token"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("home");
   const [userProfile, setUserProfile] = useState<{ [key: string]: any }>([]);
   const [loading, setLoading] = useState(true);
   const [showGreyLayer, setShowGreyLayer] = useState(false);
   const [ascents, setAscents] = useState<AscentsType[]>([]);
-  const APIURL = "http://localhost:3001";
+  const APIURL = true
+    ? "https://mycology.perenne.com"
+    : "http://localhost:3001";
+
+  const updateUserProfile = useCallback(
+    (keysToUpdate: { [key: string]: any }) => {
+      const newUserProfile = Object.keys(keysToUpdate).reduce((acc, key) => {
+        return { ...acc, [key]: keysToUpdate[key] };
+      }, {});
+      setUserProfile((prevState) => ({ ...prevState, ...newUserProfile }));
+    },
+    []
+  );
+
+  const storeRefreshedToken = useCallback(
+    (newAuthToken: string) => {
+      localStorage.setItem("authToken", newAuthToken);
+      updateUserProfile({ authToken: newAuthToken });
+    },
+    [updateUserProfile]
+  );
 
   /*Runs when application is first opened, attempts to login user if previous session is still valid */
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(cookies);
+  }, [cookies]);
 
   useEffect(() => {
     setLoading(true);
@@ -76,6 +100,8 @@ const App = () => {
     fetchData();
     setLoading(false);
   }, [setUserProfile, setLoading]);
+
+  console.log(userProfile);
 
   const invalidateSession = useCallback((keysToReset: string[] | string) => {
     if (Array.isArray(keysToReset)) {
@@ -108,14 +134,17 @@ const App = () => {
           setAscents,
           APIURL,
           invalidateSession,
+          updateUserProfile,
+          storeRefreshedToken,
         }}
       >
         <ThemeProvider theme={theme}>
           <GreyLayerWrapper>
             <div className={showGreyLayer ? "visible" : "invisible"} />
           </GreyLayerWrapper>
-          <NavBar />
+
           <ApplicationWrapper>
+            <NavBar />
             <Sidebar
               setSelectedTab={setSelectedTab}
               selectedTab={selectedTab}
@@ -150,14 +179,12 @@ export default App;
 const ApplicationWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.secondaryBlack};
   display: flex;
-  height: fill-available;
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
-  height: fill-available;
-  max-height: 100%;
-  overflow-y: auto;
+  max-height: 100vh;
+  overflow-y: hidden;
   /* background-color: ${(props) => props.theme.colors.primaryBlack}; */
   display: flex;
   flex-direction: column;
@@ -175,7 +202,7 @@ const GreyLayerWrapper = styled.div`
     background-color: #1a1f2a;
     opacity: 50%;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     margin: 0px;
     animation: opacify 300ms ease-in 0ms forwards;
     @keyframes opacify {

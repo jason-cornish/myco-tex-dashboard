@@ -115,7 +115,11 @@ const LoginPage = () => {
   useEffect(() => {
     const stateCopy = { ...formState };
     const emailErrorState = inputHasError("email");
-    if (emailErrorState.hasError && formState.password.value !== "") {
+    if (
+      emailErrorState.hasError &&
+      formState.password.value !== "" &&
+      !stateCopy.email.hasError
+    ) {
       stateCopy.email.errorMessage = emailErrorState.errorMessage;
       stateCopy.email.hasError = emailErrorState.hasError;
       stateCopy.email.renderValidityIcon = true;
@@ -133,6 +137,7 @@ const LoginPage = () => {
   }, [formState, inputHasError]);
 
   const handleSubmit = async () => {
+    console.log("testing");
     const emailErrorState = inputHasError("email");
     const passwordErrorState = inputHasError("password");
     const stateCopy = { ...formState };
