@@ -20,17 +20,14 @@ const SteamerLive = () => {
   const time = useTimer(1000);
 
   const options = useMemo(() => {
-    console.log(userProfile.authToken);
     return {
-      liveOptions: {
-        url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/false`,
-        method: "GET",
-        headers: {
-          "x-access-token": userProfile.authToken,
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
+      url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/false`,
+      method: "GET",
+      headers: {
+        "x-access-token": userProfile.authToken,
+        "Content-Type": "application/json",
       },
+      withCredentials: true,
     };
   }, [APIURL, userProfile, availableTabs]);
 
@@ -38,21 +35,24 @@ const SteamerLive = () => {
     data: liveData,
     dataError: liveDataError,
     dataLoading: liveDataLoading,
-  } = useFetch(options.liveOptions, time);
+  } = useFetch(options, time);
+  console.log(liveData);
 
   const parsedLiveData = useMemo(() => {
-    let response: any = { temp: false };
-    if (!liveDataLoading && !liveDataError) {
-      response = getMeasurementFromRawData(liveData, {
-        probeTypes: ["temp"],
-        includeHistorical: false,
-      });
+    let response: any = {};
+    if (!liveDataLoading && !liveDataError && liveData.hasOwnProperty("data")) {
+      if (liveData.data) {
+        response = getMeasurementFromRawData(liveData.data, {
+          includeHistorical: false,
+        });
+      }
     }
     return response;
   }, [liveData, liveDataLoading, liveDataError]);
 
   const hasLiveConnection = useMemo(() => {
     let mostRecentDate = 0;
+    console.log(parsedLiveData);
     Object.keys(parsedLiveData).forEach((probe, i) => {
       //   console.log(parsedLiveData[probe]);
       if (
@@ -62,11 +62,16 @@ const SteamerLive = () => {
         return;
       }
       if (i === 0) {
-        mostRecentDate = parsedLiveData[probe]["measure_created_at"] * 1000;
+        mostRecentDate =
+          parsedLiveData[probe].measurements[0]["measure_created_at"] * 1000;
         return;
       }
-      if (mostRecentDate > parsedLiveData[probe]["measure_created_at"]) {
-        mostRecentDate = parsedLiveData[probe]["measure_created_at"] * 1000;
+      if (
+        mostRecentDate >
+        parsedLiveData[probe].measurements[0]["measure_created_at"]
+      ) {
+        mostRecentDate =
+          parsedLiveData[probe].measurements[0]["measure_created_at"] * 1000;
       }
     });
     const secondDifference = time - mostRecentDate;
@@ -78,7 +83,7 @@ const SteamerLive = () => {
     <SectionWrapper>
       <SectionTitleWrapper>
         <SectionTitle>Live Steamer Data</SectionTitle>
-        <LiveConection hasLiveConnection={hasLiveConnection} />
+        {/* <LiveConection hasLiveConnection={hasLiveConnection} /> */}
       </SectionTitleWrapper>
       <SteamerBlueprint liveData={parsedLiveData} />
     </SectionWrapper>

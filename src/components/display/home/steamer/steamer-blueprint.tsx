@@ -4,6 +4,7 @@ import {
   GreyText,
 } from "../../../../reusable/styled-components";
 import { LiveSteamerDataType } from "../types";
+import LiveReading from "./live-reading";
 
 type PropsType = {
   liveData: LiveSteamerDataType;
@@ -17,13 +18,11 @@ const SteamerBlueprint = (props: PropsType) => {
       {Object.keys(liveData).length > 0 ? (
         Object.keys(liveData).map((probe, i) => {
           return (
-            <TemperatureReading className={classes[i]}>
-              <DataText>
-                {liveData[probe].measure}
-                {"\u00b0"}
-              </DataText>
-              <SubGreyText>Temp #{i + 1}</SubGreyText>
-            </TemperatureReading>
+            <LiveReading
+              data={liveData[probe]}
+              name={probe}
+              className={classes[i]}
+            />
           );
         })
       ) : (

@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import styled from "styled-components";
@@ -24,6 +25,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 import axios from "axios";
+import { useFetch } from "../../../hooks/useFetch";
+import NoDataComponent from "../../../reusable/no-data-component";
 
 export const HomeContext = createContext<any>({} as any);
 
@@ -45,6 +48,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!userProfile.hasOwnProperty("email") || !userProfile.email) {
+      console.log(userProfile);
       navigate("/landing");
     }
   }, [navigate, userProfile]);
@@ -77,36 +81,43 @@ const Profile = () => {
 
   const generateAvailableRooms = useCallback((userReport: any) => {
     let localAvailableTabs: any = {};
-    userReport.locations[0].rooms.forEach((room: any) => {
+    userReport.data.locations[0].rooms.forEach((room: any) => {
       localAvailableTabs[room.room_title] = room;
     });
     return localAvailableTabs;
   }, []);
 
+  const options = useMemo(() => {
+    return {
+      url: `${APIURL}/api/report`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": userProfile.authToken,
+      },
+    };
+  }, [userProfile, APIURL]);
+
+  const { data: userReport }: any = useFetch(options, false);
+
   useEffect(() => {
     if (reportDataAvailable) setReportDataAvailable(false);
     (async () => {
-      const options = {
-        url: `${APIURL}/api/report`,
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": userProfile.authToken,
-        },
-        // withCredentials: true,
-      };
-
-      const userReport: any = await fetchFromAPI(options);
       if (userReport) {
-        if (userReport.locations[0].rooms.length) {
-          const localAvailableTabs = generateAvailableRooms(userReport);
-          setAvailableTabs(localAvailableTabs);
-          setReportDataAvailable(true);
+        console.log(userReport);
+        if (userReport.hasOwnProperty("data")) {
+          if (userReport.data.hasOwnProperty("locations")) {
+            //.locations[0].rooms.length
+            const localAvailableTabs = generateAvailableRooms(userReport);
+            setAvailableTabs(localAvailableTabs);
+            setReportDataAvailable(true);
+          }
         }
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    userReport,
     fetchFromAPI,
     APIURL,
     userProfile,
@@ -118,9 +129,9 @@ const Profile = () => {
   return (
     <HomeWrapper>
       <CenteredDiv>
-        <NavigationTabs>
-          {reportDataAvailable && Object.keys(availableTabs).length ? (
-            Object.keys(availableTabs).map((tab) => {
+        {reportDataAvailable && Object.keys(availableTabs).length ? (
+          <NavigationTabs>
+            {Object.keys(availableTabs).map((tab) => {
               return (
                 <TabText
                   to={`${tab.toLowerCase()}`}
@@ -132,11 +143,12 @@ const Profile = () => {
                   {tab}
                 </TabText>
               );
-            })
-          ) : (
-            <div />
-          )}
-        </NavigationTabs>
+            })}
+          </NavigationTabs>
+        ) : (
+          <NoDataComponent />
+        )}
+
         <HomeContext.Provider
           value={{
             availableTabs,
@@ -144,7 +156,7 @@ const Profile = () => {
             reportDataAvailable,
           }}
         >
-          {reportDataAvailable ? <Outlet /> : <div>Data unavailable</div>}
+          {reportDataAvailable ? <Outlet /> : <div></div>}
         </HomeContext.Provider>
       </CenteredDiv>
     </HomeWrapper>

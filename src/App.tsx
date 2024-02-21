@@ -57,15 +57,14 @@ const theme = {
 export const DataContext = createContext<any>({} as any);
 
 const App = () => {
-  const [cookies] = useCookies(["x-refresh-token"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("home");
-  const [userProfile, setUserProfile] = useState<{ [key: string]: any }>([]);
+  const [userProfile, setUserProfile] = useState<{ [key: string]: any }>({});
   const [loading, setLoading] = useState(true);
   const [showGreyLayer, setShowGreyLayer] = useState(false);
   const [ascents, setAscents] = useState<AscentsType[]>([]);
   const APIURL = true
-    ? "https://mycology.perenne.com"
+    ? "https://mycotex.benballard.dev"
     : "http://localhost:3001";
 
   const updateUserProfile = useCallback(
@@ -86,10 +85,31 @@ const App = () => {
     [updateUserProfile]
   );
 
+  useEffect(() => {
+    console.log(userProfile);
+  }, [userProfile]);
+
   /*Runs when application is first opened, attempts to login user if previous session is still valid */
   useEffect(() => {
-    console.log(cookies);
-  }, [cookies]);
+    let valuesRetrieved = false;
+    const localStorageValues: { [key: string]: any } = {
+      authToken: false,
+      email: false,
+      name: false,
+      userID: false,
+    };
+    Object.keys(localStorageValues).forEach((key) => {
+      const fetchedValue = localStorage.getItem(key);
+      if (fetchedValue) {
+        valuesRetrieved = true;
+        localStorageValues[key] = fetchedValue;
+      }
+    });
+    if (valuesRetrieved) {
+      console.log(localStorageValues);
+      updateUserProfile(localStorageValues);
+    }
+  }, [updateUserProfile]);
 
   useEffect(() => {
     setLoading(true);
@@ -179,6 +199,7 @@ export default App;
 const ApplicationWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.secondaryBlack};
   display: flex;
+  height: 100vh;
 `;
 
 const ContentWrapper = styled.div`

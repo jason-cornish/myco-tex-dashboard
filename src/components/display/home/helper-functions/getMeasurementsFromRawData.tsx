@@ -1,5 +1,4 @@
 type OptionsType = {
-  probeTypes: string[];
   includeHistorical: boolean;
 };
 
@@ -7,31 +6,25 @@ export const getMeasurementFromRawData = (
   rawData: any,
   options: OptionsType
 ) => {
-  const { includeHistorical, probeTypes } = options;
-  console.log(rawData);
-  const dataByProbeType: any = {};
+  const { includeHistorical } = options;
   /*Initializing the return object*/
-  [...probeTypes].forEach(
-    (type) => (dataByProbeType[type] = { measure: false })
-  );
-  try {
-    rawData.controllers.forEach((controller: any) => {
-      const probe = controller.probes[0];
+  const data = rawData.controllers.reduce((accum: any, controller: any) => {
+    const probe = controller.probes[0];
 
-      if (probeTypes.includes(probe.probe_type)) {
-        let measurements = [];
-        if (includeHistorical) {
-          measurements = probe.measurements;
-        } else {
-          measurements = probe.measurements[0];
-        }
-        if (dataByProbeType.hasOwnProperty(probe.probe_type)) {
-          dataByProbeType[probe.probe_type] = measurements;
-        }
-      }
-    });
-  } catch {
-    return false;
-  }
-  return dataByProbeType;
+    let measurements = [];
+    if (includeHistorical) {
+      measurements = [probe.measurements];
+    } else {
+      measurements = [probe.measurements[0]];
+    }
+
+    accum[controller.controller_name] = {
+      type: probe.probe_type,
+      measurements: measurements,
+    };
+    return accum;
+  }, {});
+  rawData.controllers.forEach((controller: any) => {});
+
+  return data;
 };

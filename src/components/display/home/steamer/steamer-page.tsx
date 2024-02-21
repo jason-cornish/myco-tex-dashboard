@@ -56,15 +56,13 @@ const SteamerPage = () => {
 
   const options = useMemo(() => {
     return {
-      historicalOptions: {
-        url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/true`,
-        method: "GET",
-        headers: {
-          "x-access-token": userProfile.authToken,
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
+      url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/true`,
+      method: "GET",
+      headers: {
+        "x-access-token": userProfile.authToken,
+        "Content-Type": "application/json",
       },
+      withCredentials: true,
     };
   }, [APIURL, userProfile.authToken, availableTabs]);
 
@@ -72,24 +70,26 @@ const SteamerPage = () => {
     data: historicalData,
     dataError: historicalDataError,
     dataLoading: historicalDataLoading,
-  } = useFetch(options.historicalOptions, false);
+  } = useFetch(options, false);
 
-  const chartOptions = useMemo(() => {
-    const returnValue = {
-      options: { yAxisType: "temp" },
-      data: [],
-    };
-    if (!historicalDataLoading && !historicalDataError) {
-      console.log(historicalData);
-      const parsedData = getMeasurementFromRawData(historicalData, {
-        includeHistorical: true,
-        probeTypes: ["temp"],
-      });
-      console.log(parsedData);
-      returnValue.data = parsedData;
-    }
-    return returnValue;
-  }, [historicalData, historicalDataError, historicalDataLoading]);
+  // const chartOptions = useMemo(() => {
+  //   const returnValue = {
+  //     options: { yAxisType: "temp" },
+  //     data: [],
+  //   };
+  //   if (
+  //     !historicalDataLoading &&
+  //     !historicalDataError &&
+  //     historicalData.hasOwnProperty("data")
+  //   ) {
+  //     const parsedData = getMeasurementFromRawData(historicalData.data, {
+  //       includeHistorical: true,
+  //       probeTypes: ["temp"],
+  //     });
+  //     returnValue.data = parsedData;
+  //   }
+  //   return returnValue;
+  // }, [historicalData, historicalDataError, historicalDataLoading]);
 
   return (
     <SteamerPageWrapper>
@@ -119,7 +119,7 @@ const SteamerPage = () => {
           />
         </SectionTitleWrapper>
         <ChartWrapper>
-          <TemperatureTimeChart chartOptions={chartOptions} />
+          {/* <TemperatureTimeChart chartOptions={chartOptions} /> */}
         </ChartWrapper>
       </SectionWrapper>
     </SteamerPageWrapper>

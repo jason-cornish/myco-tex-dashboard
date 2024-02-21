@@ -6,7 +6,8 @@ export const sendLoginRequest = async (
   APIURL: string
 ) => {
   const options = {
-    url: "https://mycology.perenne.com/api/user/login",
+    url: "https://mycotex.benballard.dev/api/user/login",
+    // url: "http://localhost:3001/api/user/login",
     method: "POST",
     data: {
       user_email: formState.email.value,
