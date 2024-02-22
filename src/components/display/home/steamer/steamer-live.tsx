@@ -3,7 +3,7 @@ import {
   ColumnWrapper,
   RowWrapper,
 } from "../../../../reusable/styled-components";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { HomeContext } from "../home";
 import { DataContext } from "../../../../App";
 import { useTimer } from "../../../../hooks/useTimer";
@@ -11,6 +11,7 @@ import { useFetch } from "../../../../hooks/useFetch";
 import LiveConection from "../live-connection";
 import SteamerBlueprint from "./steamer-blueprint";
 import { getMeasurementFromRawData } from "../helper-functions/getMeasurementsFromRawData";
+import useDataParser from "../../../../hooks/useDataParser";
 
 const SteamerLive = () => {
   const { userProfile, APIURL } = useContext(DataContext);
@@ -36,56 +37,52 @@ const SteamerLive = () => {
     dataError: liveDataError,
     dataLoading: liveDataLoading,
   } = useFetch(options, time);
-  console.log(liveData);
 
-  const parsedLiveData = useMemo(() => {
-    let response: any = {};
-    if (!liveDataLoading && !liveDataError && liveData.hasOwnProperty("data")) {
-      if (liveData.data) {
-        response = getMeasurementFromRawData(liveData.data, {
-          includeHistorical: false,
-        });
-      }
-    }
-    return response;
-  }, [liveData, liveDataLoading, liveDataError]);
+  const parseOptions = useMemo(() => {
+    return { includeHistorical: false, probeTypesToInclude: ["therm"] };
+  }, []);
+
+  const { parsedData } = useDataParser(
+    liveData,
+    liveDataError,
+    liveDataLoading,
+    parseOptions
+  );
 
   const hasLiveConnection = useMemo(() => {
     let mostRecentDate = 0;
-    console.log(parsedLiveData);
-    Object.keys(parsedLiveData).forEach((probe, i) => {
-      //   console.log(parsedLiveData[probe]);
+
+    Object.keys(parsedData).forEach((probe, i) => {
       if (
-        !parsedLiveData[probe].hasOwnProperty("measure") ||
-        !parsedLiveData[probe].hasOwnProperty("measure_created_at")
+        !parsedData[probe].hasOwnProperty("measure") ||
+        !parsedData[probe].hasOwnProperty("measure_created_at")
       ) {
         return;
       }
       if (i === 0) {
         mostRecentDate =
-          parsedLiveData[probe].measurements[0]["measure_created_at"] * 1000;
+          parsedData[probe].measurements[0]["measure_created_at"] * 1000;
         return;
       }
       if (
-        mostRecentDate >
-        parsedLiveData[probe].measurements[0]["measure_created_at"]
+        mostRecentDate > parsedData[probe].measurements[0]["measure_created_at"]
       ) {
         mostRecentDate =
-          parsedLiveData[probe].measurements[0]["measure_created_at"] * 1000;
+          parsedData[probe].measurements[0]["measure_created_at"] * 1000;
       }
     });
     const secondDifference = time - mostRecentDate;
     if (mostRecentDate >= time || secondDifference <= 2000) return true;
     return false;
-  }, [parsedLiveData, time]);
-
+  }, [parsedData, time]);
+  console.log("re-rendering");
   return (
     <SectionWrapper>
       <SectionTitleWrapper>
         <SectionTitle>Live Steamer Data</SectionTitle>
-        {/* <LiveConection hasLiveConnection={hasLiveConnection} /> */}
+        <LiveConection hasLiveConnection={hasLiveConnection} />
       </SectionTitleWrapper>
-      <SteamerBlueprint liveData={parsedLiveData} />
+      <SteamerBlueprint liveData={parsedData} />
     </SectionWrapper>
   );
 };

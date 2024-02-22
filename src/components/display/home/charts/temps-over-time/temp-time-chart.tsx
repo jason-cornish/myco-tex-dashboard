@@ -7,24 +7,37 @@ import { useChartDataFormatter } from "../../../../../hooks/useChartDataFormatte
 
 type PropsType = {
   chartOptions: {
-    options: {
-      yAxisType: string;
+    yAxisType: string;
+  };
+  parsedData: {
+    [key: string]: {
+      measurements: [
+        {
+          measure: number;
+          measure_created_at: number;
+          measure_id: string;
+        }
+      ];
+      type: string;
     };
-    data: {
-      name: string;
-      color: string;
-      data: number[][];
-    }[];
   };
 };
 
+/* 
+
+data: {
+      name: string;
+      color: string;
+      data: number[][];
+    }[];*/
 const TemperatureTimeChart = memo((props: PropsType) => {
   const { theme } = useContext(DataContext);
-  const { chartOptions } = props;
+  const { chartOptions, parsedData } = props;
   console.log(chartOptions);
+  console.log(parsedData);
   const chartData = useChartDataFormatter(
-    chartOptions.data,
-    chartOptions.options.yAxisType.toLowerCase()
+    parsedData,
+    chartOptions.yAxisType.toLowerCase()
   );
 
   console.log(chartData);
@@ -119,15 +132,15 @@ const TemperatureTimeChart = memo((props: PropsType) => {
     value: number;
     tickPositionInfo: { unitName: string };
   }) {
-    if (chartOptions.options.yAxisType === "temp") {
+    if (chartOptions.yAxisType === "temp") {
       return `<span>
       ${input.value}${"\u00b0"}
     </span>`;
-    } else if (chartOptions.options.yAxisType === "PPM") {
+    } else if (chartOptions.yAxisType === "PPM") {
       return `<span>
       ${input.value} PM2.5
     </span>`;
-    } else if (chartOptions.options.yAxisType === "percentage") {
+    } else if (chartOptions.yAxisType === "percentage") {
       return `<span>
       ${input.value} PPM
     </span>`;

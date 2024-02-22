@@ -19,88 +19,13 @@ import { DataContext } from "../../../../App";
 import { HomeContext } from "../home";
 import { useFetch } from "../../../../hooks/useFetch";
 import { getMeasurementFromRawData } from "../helper-functions/getMeasurementsFromRawData";
+import useDataParser from "../../../../hooks/useDataParser";
+import HistoricalSection from "./historical-section";
 
 const SteamerPage = () => {
-  const { userProfile, APIURL } = useContext(DataContext);
-  const { availableTabs, fetchFromAPI, reportDataAvailable } =
-    useContext(HomeContext);
-  const [historicalTimeRange, setHistoricalTimeRange] =
-    useState<string>("24 hours");
-
-  const handleClickOption: any = (value: string, stateName?: string) => {
-    setHistoricalTimeRange(value);
-  };
-
-  const dropdownOptions: DropdownOption[] = [
-    {
-      option: "24 hours",
-      onClick: () => handleClickOption("24 hours"),
-      icon: false,
-    },
-    {
-      option: "7 days",
-      onClick: () => handleClickOption("7 days"),
-      icon: false,
-    },
-    {
-      option: "30 days",
-      onClick: () => handleClickOption("30 days"),
-      icon: false,
-    },
-    {
-      option: "90 days",
-      onClick: () => handleClickOption("90 days"),
-      icon: false,
-    },
-  ];
-
-  const options = useMemo(() => {
-    return {
-      url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/true`,
-      method: "GET",
-      headers: {
-        "x-access-token": userProfile.authToken,
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    };
-  }, [APIURL, userProfile.authToken, availableTabs]);
-
-  const {
-    data: historicalData,
-    dataError: historicalDataError,
-    dataLoading: historicalDataLoading,
-  } = useFetch(options, false);
-
-  // const chartOptions = useMemo(() => {
-  //   const returnValue = {
-  //     options: { yAxisType: "temp" },
-  //     data: [],
-  //   };
-  //   if (
-  //     !historicalDataLoading &&
-  //     !historicalDataError &&
-  //     historicalData.hasOwnProperty("data")
-  //   ) {
-  //     const parsedData = getMeasurementFromRawData(historicalData.data, {
-  //       includeHistorical: true,
-  //       probeTypes: ["temp"],
-  //     });
-  //     returnValue.data = parsedData;
-  //   }
-  //   return returnValue;
-  // }, [historicalData, historicalDataError, historicalDataLoading]);
-
   return (
     <SteamerPageWrapper>
-      <SteamerLive />
-      {/* <SectionWrapper>
-        <SectionTitleWrapper>
-          <SectionTitle>Live Steamer Data</SectionTitle>
-          <LiveConection hasLiveConnection={hasLiveConnection} />
-        </SectionTitleWrapper>
-        <SteamerBlueprint liveData={liveSteamerData} />
-      </SectionWrapper> */}
+      {/* <SteamerLive /> */}
 
       {/* <Button
         type="fancy"
@@ -110,18 +35,7 @@ const SteamerPage = () => {
         onClick={() => {}}
       /> */}
 
-      <SectionWrapper>
-        <SectionTitleWrapper>
-          <SectionTitle>Temperatures Over Time</SectionTitle>
-          <Dropdown
-            options={dropdownOptions}
-            selectedOption={historicalTimeRange}
-          />
-        </SectionTitleWrapper>
-        <ChartWrapper>
-          {/* <TemperatureTimeChart chartOptions={chartOptions} /> */}
-        </ChartWrapper>
-      </SectionWrapper>
+      <HistoricalSection />
     </SteamerPageWrapper>
   );
 };

@@ -116,7 +116,7 @@ const IncubatorPage = () => {
           <SectionTitle>Temperatures Over Time</SectionTitle>
         </SectionTitleWrapper>
         <ChartWrapper>
-          <TemperatureTimeChart chartOptions={tempChartOptions} />
+          {/* <TemperatureTimeChart chartOptions={tempChartOptions} /> */}
         </ChartWrapper>
       </SectionWrapper>
       <SectionWrapper>
@@ -124,7 +124,7 @@ const IncubatorPage = () => {
           <SectionTitle>CO2 Over Time</SectionTitle>
         </SectionTitleWrapper>
         <ChartWrapper>
-          <TemperatureTimeChart chartOptions={co2ChartOptions} />
+          {/* <TemperatureTimeChart chartOptions={co2ChartOptions} /> */}
         </ChartWrapper>
       </SectionWrapper>
     </IncubatorPageWrapper>

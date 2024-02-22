@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { GreyText } from "../../../../reusable/styled-components";
+import { GreyText } from "./styled-components";
 
 type PropsType = {
   data: any;
@@ -7,12 +7,13 @@ type PropsType = {
   className: string;
 };
 
-const LiveReading = (props: any) => {
+const LiveReading = (props: PropsType) => {
   const { data, name, className } = props;
+
   return (
     <TemperatureReading className={className}>
       <DataText>
-        {Math.round(data.measurements[0].measure)}
+        {Math.round(data.measure)}
         {"\u00b0"}
       </DataText>
       <SubGreyText>{name}</SubGreyText>
