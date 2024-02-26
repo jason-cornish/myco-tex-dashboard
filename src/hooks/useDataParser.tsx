@@ -16,7 +16,6 @@ const useDataParser = (
   const getMeasurementFromRawData = useCallback(() => {
     const { includeHistorical } = options;
     /*Initializing the return object*/
-    console.log(data.data);
     const newParsedData = data.data.controllers.reduce(
       (accum: any, controller: any) => {
         const probe = controller.probes[0];
@@ -40,7 +39,6 @@ const useDataParser = (
       },
       {}
     );
-    console.log(newParsedData);
     //   data.data.controllers.forEach((controller: any) => {});
     return newParsedData;
   }, [data, options]);

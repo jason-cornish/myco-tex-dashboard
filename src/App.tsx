@@ -40,7 +40,8 @@ const theme = {
     highlight2: "#303134",
     highlight3: "#2e323e",
     highlight4: "#363c49",
-    hightlight5: "#5a6479",
+    highlight5: "#4a4f5b",
+    hightlight6: "#5a6479",
     borderColor: "#919191",
   },
   fonts: {
@@ -51,6 +52,8 @@ const theme = {
     borderRadius: "7px",
     boxShadow:
       "inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.1), 0 0 0 1px hsla(230, 13%, 9%, 0.075), 0 0.3px 0.4px hsla(230, 13%, 9%, 0.02), 0 0.9px 1.5px hsla(230, 13%, 9%, 0.045), 0 3.5px 6px hsla(230, 13%, 9%, 0.09)",
+    highlightBoxShadow:
+      "inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.1), 0 0 0 1px hsla(230, 13%, 9%, 0.075), 0 0.3px 0.4px hsla(230, 13%, 9%, 0.02), 0 0.9px 1.5px hsla(230, 13%, 9%, 0.045), 0 3.5px 6px rgba(0, 192, 125, 0.6)",
   },
 };
 
@@ -205,7 +208,7 @@ const ApplicationWrapper = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
   max-height: 100vh;
-  overflow-y: hidden;
+  overflow-y: auto;
   /* background-color: ${(props) => props.theme.colors.primaryBlack}; */
   display: flex;
   flex-direction: column;

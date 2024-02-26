@@ -3,16 +3,13 @@ import { HomeContext } from "../components/display/home/home";
 import { DataContext } from "../App";
 
 type DataType = {
-  [key: string]: {
-    measurements: [
-      {
-        measure: number;
-        measure_created_at: number;
-        measure_id: string;
-      }
-    ];
-    type: string;
-  };
+  [key: string]: [
+    {
+      measure: number;
+      measure_created_at: number;
+      measure_id: string;
+    }
+  ];
 };
 
 type ProbeType = {
@@ -41,13 +38,19 @@ export const useChartDataFormatter = (data: DataType, probeType: string) => {
         const seriesObject = {
           series: probe,
           name: probe,
-          data: data[probe].measurements.map((measurement) => {
-            return [
-              Math.round(new Date(measurement.measure_created_at).getTime()),
-              Math.round(measurement.measure),
-            ];
-          }),
+          data:
+            data[probe].length > 0
+              ? data[probe].map((measurement) => {
+                  return [
+                    Math.round(
+                      new Date(measurement.measure_created_at).getTime()
+                    ),
+                    Math.round(measurement.measure),
+                  ];
+                })
+              : [],
         };
+        console.log(series);
         series.push(seriesObject);
         return series;
       },

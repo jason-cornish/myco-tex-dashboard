@@ -4,6 +4,7 @@ import {
   GreyText,
 } from "../../../../reusable/styled-components";
 import { LiveLabDataType } from "./types";
+import { useMemo } from "react";
 
 type PropsType = {
   liveData: LiveLabDataType;
@@ -11,40 +12,39 @@ type PropsType = {
 
 const LabBlueprint = (props: PropsType) => {
   const { liveData } = props;
+  const liveTemperatures = useMemo(() => {
+    let response = ["?"];
+    if (liveData.hasOwnProperty("therm")) {
+      if (Object.keys(liveData).length > 0) {
+        Object.keys(liveData.therm).forEach((probe, i) => {
+          //temporary, need to remove probes from Josh's account
+          if (i > 0) return;
+          response[i] = liveData.therm[probe].measurements[0].measure;
+        });
+      }
+    }
+    return response;
+  }, [liveData]);
+
+  const livePPM = useMemo(() => {
+    let response = ["?"];
+    if (liveData.hasOwnProperty("ppm")) {
+      if (Object.keys(liveData).length > 0) {
+        Object.keys(liveData.ppm).forEach((probe, i) => {
+          //temporary, need to remove probes from Josh's account
+          if (i > 0) return;
+          response[0] = liveData.ppm[probe].measurements[0].measure;
+        });
+      }
+    }
+    return response;
+  }, [liveData]);
   return (
     <LabWrapper>
-      {/* <TemperatureReading className="one">
-        <DataText>
-          {liveData.temp1}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #1</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="two">
-        <DataText>
-          {liveData.temp2}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #2</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="three">
-        <DataText>
-          {liveData.temp3}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #3</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="four">
-        <DataText>
-          {liveData.temp4}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #4</SubGreyText>
-      </TemperatureReading> */}
       <GreyText>Lab</GreyText>
-      <PPMText>{liveData.ppm ? liveData.ppm.measure : "?"} PM2.5</PPMText>
+      <PPMText>{livePPM[0]} PM2.5</PPMText>
       <PPMText>
-        {liveData.temp ? liveData.temp.measure : "?"}
+        {liveTemperatures[0]}
         {"\u00b0"}
       </PPMText>
     </LabWrapper>
@@ -86,25 +86,8 @@ const LabWrapper = styled(ColumnWrapper)`
   }
 `;
 
-const TemperatureReading = styled.div`
-  font-weight: bold;
-  text-align: center;
-  row-gap: 3px;
-`;
-
-const DataText = styled.p`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${(props) => props.theme.colors.primaryWhite};
-  margin-left: 5px;
-`;
-
 const PPMText = styled.p`
   font-size: 32px;
   font-weight: bold;
   color: ${(props) => props.theme.colors.primaryWhite};
-`;
-
-const SubGreyText = styled(GreyText)`
-  font-size: 18px;
 `;

@@ -3,18 +3,31 @@ import {
   ColumnWrapper,
   GreyText,
 } from "../../../../reusable/styled-components";
-import { MixerDataType } from "./types";
+import { LiveMixerDataType } from "../types";
+import { useMemo } from "react";
 
 type PropsType = {
-  data: MixerDataType;
+  liveData: LiveMixerDataType;
 };
 
 const MixerBlueprint = (props: PropsType) => {
-  const { data } = props;
+  const { liveData } = props;
+  const liveMixerData = useMemo(() => {
+    let reading: string | number = "?";
+    if (liveData.hasOwnProperty("hum")) {
+      if (Object.keys(liveData.hum).length > 0) {
+        const probeName = Object.keys(liveData.hum)[0];
+        if (liveData.hum[probeName].measurements.length > 0) {
+          reading = liveData.hum[probeName].measurements[0].measure.toFixed(2);
+        }
+      }
+    }
+    return reading;
+  }, [liveData]);
   return (
     <MixerWrapper>
       <GreyText>Mixer</GreyText>
-      <DataText>{data.humidity}% Soil Moisture</DataText>
+      <DataText>{liveMixerData}% Soil Moisture</DataText>
     </MixerWrapper>
   );
 };

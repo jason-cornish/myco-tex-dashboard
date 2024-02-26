@@ -3,46 +3,68 @@ import {
   ColumnWrapper,
   GreyText,
 } from "../../../../reusable/styled-components";
-import { LiveIncubatorDataType } from "./types";
+import { useMemo } from "react";
 
 type PropsType = {
-  liveData: LiveIncubatorDataType;
+  liveData: any;
 };
 
 const IncubatorBlueprint = (props: PropsType) => {
   const { liveData } = props;
+  const classes = ["one", "two", "three", "four"];
+
+  const liveTemperatures = useMemo(() => {
+    let response: any = [
+      { name: "temp_1", measure: "?" },
+      { name: "temp_2", measure: "?" },
+      { name: "temp_3", measure: "?" },
+      { name: "temp_4", measure: "?" },
+    ];
+    if (liveData.hasOwnProperty("therm")) {
+      if (Object.keys(liveData).length > 0) {
+        Object.keys(liveData.therm).forEach((probe, i) => {
+          response[i] = {
+            name: probe,
+            measure: liveData.therm[probe].measurements[0].measure,
+          };
+        });
+      }
+    }
+    return response;
+  }, [liveData]);
+
+  const liveCo2 = useMemo(() => {
+    let response: any = ["?"];
+    if (liveData.hasOwnProperty("co2")) {
+      if (Object.keys(liveData).length > 0) {
+        Object.keys(liveData.co2).forEach((probe, i) => {
+          if (i > 0) return;
+          response[0] = liveData["co2"][probe].measurements[0].measure;
+        });
+      }
+    }
+    return response;
+  }, [liveData]);
+
   return (
     <IncubatorWrapper>
-      <TemperatureReading className="one">
-        <DataText>
-          {liveData.temp1}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #1</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="two">
-        <DataText>
-          {liveData.temp2}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #2</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="three">
-        <DataText>
-          {liveData.temp3}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #3</SubGreyText>
-      </TemperatureReading>
-      <TemperatureReading className="four">
-        <DataText>
-          {liveData.temp4}
-          {"\u00b0"}
-        </DataText>
-        <SubGreyText>Temp #4</SubGreyText>
-      </TemperatureReading>
+      {liveTemperatures.length > 0 ? (
+        liveTemperatures.map((temp: any, i: number) => {
+          return (
+            <TemperatureReading className={classes[i]}>
+              <DataText>
+                {temp.measure}
+                {"\u00b0"}
+              </DataText>
+              <SubGreyText>{temp.name}</SubGreyText>
+            </TemperatureReading>
+          );
+        })
+      ) : (
+        <div />
+      )}
       <GreyText>Incubation Room</GreyText>
-      <PPMText>{liveData.co2} PPM (CO2)</PPMText>
+      <PPMText>{liveCo2[0]} PPM (CO2)</PPMText>
     </IncubatorWrapper>
   );
 };

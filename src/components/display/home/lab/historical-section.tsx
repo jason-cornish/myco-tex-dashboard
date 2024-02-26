@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import { ColumnWrapper } from "../../../../reusable/styled-components";
-import { useContext, useMemo } from "react";
+import {
+  ColumnWrapper,
+  RowWrapper,
+} from "../../../../reusable/styled-components";
+import { DropdownOption } from "../types";
+import { useContext, useMemo, useState } from "react";
 
 import { DataContext } from "../../../../App";
 import { HomeContext } from "../home";
@@ -15,7 +19,7 @@ const HistoricalSection = () => {
   const fetchOptions = useMemo(() => {
     return {
       axiosOptions: {
-        url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/true`,
+        url: `${APIURL}/api/measure/${availableTabs.Lab.room_id}/true`,
         method: "GET",
         headers: {
           "x-access-token": userProfile.authToken,
@@ -34,7 +38,7 @@ const HistoricalSection = () => {
   } = useFetch(fetchOptions.axiosOptions, fetchOptions.timeInterval);
 
   const parseOptions = useMemo(() => {
-    return { includeHistorical: true, probeTypesToInclude: ["therm"] };
+    return { includeHistorical: true, probeTypesToInclude: ["ppm"] };
   }, []);
 
   const { parsedData } = useDataParser(
@@ -49,10 +53,7 @@ const HistoricalSection = () => {
       {Object.keys(parsedData).length > 0 ? (
         Object.keys(parsedData).map((probeType) => {
           return (
-            <ChartWrapper
-              data={parsedData[probeType]}
-              title="Temperatures Over Time"
-            />
+            <ChartWrapper data={parsedData[probeType]} title="PPM Over Time" />
           );
         })
       ) : (

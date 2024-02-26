@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import { ColumnWrapper } from "../../../../reusable/styled-components";
-import { useContext, useMemo } from "react";
+import {
+  ColumnWrapper,
+  RowWrapper,
+} from "../../../../reusable/styled-components";
+import { DropdownOption } from "../types";
+import { useContext, useMemo, useState } from "react";
 
 import { DataContext } from "../../../../App";
 import { HomeContext } from "../home";
@@ -8,14 +12,14 @@ import { useFetch } from "../../../../hooks/useFetch";
 import useDataParser from "../../../../hooks/useDataParser";
 import ChartWrapper from "../../../../reusable/chart-wrapper";
 
-const HistoricalSection = () => {
+const HistoricalTempSection = () => {
   const { userProfile, APIURL } = useContext(DataContext);
   const { availableTabs } = useContext(HomeContext);
 
   const fetchOptions = useMemo(() => {
     return {
       axiosOptions: {
-        url: `${APIURL}/api/measure/${availableTabs.Steamer.room_id}/true`,
+        url: `${APIURL}/api/measure/${availableTabs.Incubation.room_id}/true`,
         method: "GET",
         headers: {
           "x-access-token": userProfile.authToken,
@@ -62,7 +66,7 @@ const HistoricalSection = () => {
   );
 };
 
-export default HistoricalSection;
+export default HistoricalTempSection;
 
 const SectionWrapper = styled(ColumnWrapper)`
   row-gap: 10px;

@@ -5,6 +5,7 @@ import {
 } from "../../../../reusable/styled-components";
 import { LiveSteamerDataType } from "../types";
 import LiveReading from "../../../../reusable/live-reading";
+import { useMemo } from "react";
 
 type PropsType = {
   liveData: LiveSteamerDataType;
@@ -13,13 +14,20 @@ type PropsType = {
 const SteamerBlueprint = (props: PropsType) => {
   const { liveData } = props;
   const classes = ["one", "two", "three", "four"];
+
+  const temperatureProbes = useMemo(() => {
+    let probes = [];
+    if (liveData.hasOwnProperty("therm")) {
+      probes = liveData.therm;
+    }
+    return probes;
+  }, [liveData]);
   return (
     <SteamerWrapper>
-      {/* <p>test</p> */}
-      {Object.keys(liveData).map((probe, i) => {
+      {Object.keys(temperatureProbes).map((probe: any, i) => {
         return (
           <LiveReading
-            data={liveData[probe].measurements[0]}
+            data={temperatureProbes[probe].measurements[0]}
             name={probe}
             className={classes[i]}
           />
@@ -63,21 +71,4 @@ const SteamerWrapper = styled(ColumnWrapper)`
     right: 20px;
     bottom: 15px;
   }
-`;
-
-const TemperatureReading = styled.div`
-  font-weight: bold;
-  text-align: center;
-  row-gap: 3px;
-`;
-
-const DataText = styled.p`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${(props) => props.theme.colors.primaryWhite};
-  margin-left: 5px;
-`;
-
-const SubGreyText = styled(GreyText)`
-  font-size: 18px;
 `;

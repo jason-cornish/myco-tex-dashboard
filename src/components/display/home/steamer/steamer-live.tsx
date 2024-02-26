@@ -3,20 +3,18 @@ import {
   ColumnWrapper,
   RowWrapper,
 } from "../../../../reusable/styled-components";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import { HomeContext } from "../home";
 import { DataContext } from "../../../../App";
 import { useTimer } from "../../../../hooks/useTimer";
 import { useFetch } from "../../../../hooks/useFetch";
 import LiveConection from "../live-connection";
 import SteamerBlueprint from "./steamer-blueprint";
-import { getMeasurementFromRawData } from "../helper-functions/getMeasurementsFromRawData";
 import useDataParser from "../../../../hooks/useDataParser";
 
 const SteamerLive = () => {
   const { userProfile, APIURL } = useContext(DataContext);
-  const { availableTabs, fetchFromAPI, reportDataAvailable } =
-    useContext(HomeContext);
+  const { availableTabs } = useContext(HomeContext);
 
   const time = useTimer(1000);
 
@@ -51,31 +49,36 @@ const SteamerLive = () => {
 
   const hasLiveConnection = useMemo(() => {
     let mostRecentDate = 0;
-
-    Object.keys(parsedData).forEach((probe, i) => {
-      if (
-        !parsedData[probe].hasOwnProperty("measure") ||
-        !parsedData[probe].hasOwnProperty("measure_created_at")
-      ) {
-        return;
-      }
-      if (i === 0) {
-        mostRecentDate =
-          parsedData[probe].measurements[0]["measure_created_at"] * 1000;
-        return;
-      }
-      if (
-        mostRecentDate > parsedData[probe].measurements[0]["measure_created_at"]
-      ) {
-        mostRecentDate =
-          parsedData[probe].measurements[0]["measure_created_at"] * 1000;
-      }
+    if (Object.keys(parsedData).length === 0) return false;
+    Object.keys(parsedData).forEach((currentProbeType) => {
+      const probeType = parsedData[currentProbeType];
+      Object.keys(probeType).forEach((probe, i) => {
+        if (
+          !probeType[probe].hasOwnProperty("measure") ||
+          !probeType[probe].hasOwnProperty("measure_created_at")
+        ) {
+          return;
+        }
+        if (i === 0) {
+          mostRecentDate =
+            probeType[probe].measurements[0]["measure_created_at"] * 1000;
+          return;
+        }
+        if (
+          mostRecentDate >
+          probeType[probe].measurements[0]["measure_created_at"]
+        ) {
+          mostRecentDate =
+            probeType[probe].measurements[0]["measure_created_at"] * 1000;
+        }
+      });
     });
+
     const secondDifference = time - mostRecentDate;
     if (mostRecentDate >= time || secondDifference <= 2000) return true;
     return false;
   }, [parsedData, time]);
-  console.log("re-rendering");
+
   return (
     <SectionWrapper>
       <SectionTitleWrapper>

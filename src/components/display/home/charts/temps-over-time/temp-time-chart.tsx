@@ -10,16 +10,13 @@ type PropsType = {
     yAxisType: string;
   };
   parsedData: {
-    [key: string]: {
-      measurements: [
-        {
-          measure: number;
-          measure_created_at: number;
-          measure_id: string;
-        }
-      ];
-      type: string;
-    };
+    [key: string]: [
+      {
+        measure: number;
+        measure_created_at: number;
+        measure_id: string;
+      }
+    ];
   };
 };
 
@@ -120,6 +117,13 @@ const TemperatureTimeChart = memo((props: PropsType) => {
         ]);
       case "hour":
         return createLabelHtml([
+          { fontSize: "14px", color: theme.colors.primaryWhite, text: month },
+          { fontSize: "14px", color: theme.colors.primaryWhite, text: day },
+          { fontSize: "14px", color: theme.colors.primaryWhite, text: hour },
+        ]);
+      case "second":
+        return createLabelHtml([
+          { fontSize: "14px", color: theme.colors.primaryWhite, text: month },
           { fontSize: "14px", color: theme.colors.primaryWhite, text: day },
           { fontSize: "14px", color: theme.colors.primaryWhite, text: hour },
         ]);

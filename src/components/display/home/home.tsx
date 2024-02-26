@@ -7,23 +7,9 @@ import React, {
   useState,
 } from "react";
 import styled from "styled-components";
-import { ColumnWrapper, RowWrapper } from "../../../reusable/styled-components";
-import JasonCompressed from "../../../assets/JasonCompressed.jpg";
-
-import SpiderChart from "./spider-chart/spider-chart";
-import SpiderChartContainer from "./spider-chart/chart-wrapper";
-import AscentsChartContainer from "./ascents-grades-chart/chart-wrapper";
-import ScatterChartContainer from "./scatter-plot/chart-wrapper";
+import { RowWrapper } from "../../../reusable/styled-components";
 import { DataContext } from "../../../App";
-import LiveConection from "./live-connection";
-import {
-  Link,
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useFetch } from "../../../hooks/useFetch";
 import NoDataComponent from "../../../reusable/no-data-component";
@@ -172,10 +158,6 @@ const HomeWrapper = styled.div`
   @media only screen and (max-width: 850px) {
     padding: 20px;
   }
-`;
-
-const ChartsRow = styled(RowWrapper)`
-  column-gap: 20px;
 `;
 
 const TabText = styled(Link)`

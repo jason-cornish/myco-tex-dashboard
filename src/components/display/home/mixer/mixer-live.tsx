@@ -3,17 +3,18 @@ import {
   ColumnWrapper,
   RowWrapper,
 } from "../../../../reusable/styled-components";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { HomeContext } from "../home";
 import { DataContext } from "../../../../App";
 import { useTimer } from "../../../../hooks/useTimer";
 import { useFetch } from "../../../../hooks/useFetch";
 import LiveConection from "../live-connection";
-import IncubatorBlueprint from "./incubator-blueprint";
+import SteamerBlueprint from "./mixer-blueprint";
 import { getMeasurementFromRawData } from "../helper-functions/getMeasurementsFromRawData";
 import useDataParser from "../../../../hooks/useDataParser";
+import MixerBlueprint from "./mixer-blueprint";
 
-const IncubatorLive = () => {
+const MixerLive = () => {
   const { userProfile, APIURL } = useContext(DataContext);
   const { availableTabs, fetchFromAPI, reportDataAvailable } =
     useContext(HomeContext);
@@ -21,27 +22,24 @@ const IncubatorLive = () => {
   const time = useTimer(1000);
 
   const options = useMemo(() => {
-    console.log(availableTabs);
     return {
-      liveOptions: {
-        url: `${APIURL}/api/measure/${availableTabs.Incubation.room_id}/false`,
-        method: "GET",
-        headers: {
-          "x-access-token": userProfile.authToken,
-          "Content-Type": "application/json",
-        },
+      url: `${APIURL}/api/measure/${availableTabs.Mixer.room_id}/false`,
+      method: "GET",
+      headers: {
+        "x-access-token": userProfile.authToken,
+        "Content-Type": "application/json",
       },
+      withCredentials: true,
     };
-  }, [APIURL, userProfile.authToken, availableTabs]);
+  }, [APIURL, userProfile, availableTabs]);
 
   const {
     data: liveData,
     dataError: liveDataError,
     dataLoading: liveDataLoading,
-  } = useFetch(options.liveOptions, time);
-
+  } = useFetch(options, time);
   const parseOptions = useMemo(() => {
-    return { includeHistorical: false, probeTypesToInclude: ["therm", "co2"] };
+    return { includeHistorical: false, probeTypesToInclude: ["hum"] };
   }, []);
 
   const { parsedData } = useDataParser(
@@ -50,6 +48,8 @@ const IncubatorLive = () => {
     liveDataLoading,
     parseOptions
   );
+
+  console.log(parsedData);
 
   const hasLiveConnection = useMemo(() => {
     let mostRecentDate = 0;
@@ -86,15 +86,15 @@ const IncubatorLive = () => {
   return (
     <SectionWrapper>
       <SectionTitleWrapper>
-        <SectionTitle>Live Incubator Data</SectionTitle>
+        <SectionTitle>Live Steamer Data</SectionTitle>
         <LiveConection hasLiveConnection={hasLiveConnection} />
       </SectionTitleWrapper>
-      <IncubatorBlueprint liveData={parsedData} />
+      <MixerBlueprint liveData={parsedData} />
     </SectionWrapper>
   );
 };
 
-export default IncubatorLive;
+export default MixerLive;
 
 const SectionTitleWrapper = styled(RowWrapper)`
   column-gap: 10px;

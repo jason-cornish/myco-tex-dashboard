@@ -10,6 +10,8 @@ import LiveConection from "../live-connection";
 import TemperatureTimeChart from "../charts/temps-over-time/temp-time-chart";
 import { HistoricalDataType } from "../types";
 import IncubatorLive from "./incubator-live";
+import HistoricalTempSection from "./historical-temp-section";
+import HistoricalPPMSection from "./historical-ppm-section";
 
 const IncubatorPage = () => {
   const [hasLiveConnection, setHasLiveConnection] = useState(true);
@@ -111,22 +113,8 @@ const IncubatorPage = () => {
   return (
     <IncubatorPageWrapper>
       <IncubatorLive />
-      <SectionWrapper>
-        <SectionTitleWrapper>
-          <SectionTitle>Temperatures Over Time</SectionTitle>
-        </SectionTitleWrapper>
-        <ChartWrapper>
-          {/* <TemperatureTimeChart chartOptions={tempChartOptions} /> */}
-        </ChartWrapper>
-      </SectionWrapper>
-      <SectionWrapper>
-        <SectionTitleWrapper>
-          <SectionTitle>CO2 Over Time</SectionTitle>
-        </SectionTitleWrapper>
-        <ChartWrapper>
-          {/* <TemperatureTimeChart chartOptions={co2ChartOptions} /> */}
-        </ChartWrapper>
-      </SectionWrapper>
+      <HistoricalTempSection />
+      <HistoricalPPMSection />
     </IncubatorPageWrapper>
   );
 };

@@ -2,11 +2,17 @@ export type LiveSteamerDataType = {
   [key: string]: any;
 };
 
+export type LiveMixerDataType = {
+  [key: string]: any;
+};
+
 export type HistoricalDataType = {
   name: string;
   color: string;
   data: number[][];
 }[];
+
+export type DropdownOptions = DropdownOption[];
 
 export type DropdownOption = {
   option: string;
