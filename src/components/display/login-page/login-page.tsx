@@ -155,9 +155,19 @@ const LoginPage = () => {
       return;
     }
     const res: any = await sendLoginRequest(formState, APIURL);
-    if (res.hasOwnProperty("error")) {
+    if (res.status !== 200) {
+      if (res.status === 400) {
+        const formStateCopy = { ...formState };
+        formStateCopy.email.hasError = true;
+        formStateCopy.password.hasError = true;
+        formStateCopy.email.renderValidityIcon = true;
+        formStateCopy.password.renderValidityIcon = true;
+        formStateCopy.password.errorMessage = "Invalid email or password";
+        setFormState(formStateCopy);
+      }
       return;
     }
+
     setUserProfile({
       email: formState.email.value,
       name: "Fallen Oak Mycology",

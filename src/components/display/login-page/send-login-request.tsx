@@ -30,7 +30,7 @@ export const sendLoginRequest = async (
     })
     .catch((error) => {
       console.log(error);
-      return { error: error.status, message: error.data };
+      return { status: error.response.status, message: error.response.data };
     });
   return res;
 };
