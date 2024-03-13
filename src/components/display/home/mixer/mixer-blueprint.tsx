@@ -35,7 +35,7 @@ const MixerBlueprint = (props: PropsType) => {
 export default MixerBlueprint;
 
 const MixerWrapper = styled(ColumnWrapper)`
-  width: 325px;
+  width: 350px;
   height: 325px;
   background-color: ${(props) => props.theme.colors.highlight3};
   border-radius: ${(props) => props.theme.other.borderRadius};
