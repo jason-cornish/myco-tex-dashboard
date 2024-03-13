@@ -12,10 +12,10 @@ const ProfileDropdown = () => {
 
   return (
     <ProfileDropdownWrapper>
-      <Option>
+      {/* <Option>
         <Icon icon="person" />
         <h1>Profile</h1>
-      </Option>
+      </Option> */}
       <Option onClick={handleLogoutRequest}>
         <Icon icon="log-out" />
         <h1>Logout</h1>
@@ -49,12 +49,12 @@ const Option = styled(RowWrapper)`
   box-sizing: border-box;
   align-items: center;
   @media only screen and (max-width: 850px) {
-    justify-content: center;
+    /* justify-content: center; */
   }
   column-gap: 15px;
   transition: background-color 300ms ease-in-out;
   h1 {
-    display: flex;
+    font-size: 16px;
   }
   :hover {
     background-color: ${(props) => props.theme.colors.highlight4};

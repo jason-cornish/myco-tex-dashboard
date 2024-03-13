@@ -14,7 +14,7 @@ export const sendLoginRequest = async (
       user_pass: formState.password.value,
     },
     headers: {
-      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Access-Control-Allow-Origin": "https://myco-tex.web.app/",
       "Content-Type": "application/json",
     },
     withCredentials: true,
@@ -24,6 +24,7 @@ export const sendLoginRequest = async (
       console.log(res);
 
       return {
+        status: res.status,
         token: res.headers["x-access-token"],
         user_id: res.data["user_id"],
       };

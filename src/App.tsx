@@ -80,6 +80,21 @@ const App = () => {
     []
   );
 
+  const demoUserCredentials = {
+    email: {
+      value: "test@test.com",
+      hasError: false,
+      renderValidityIcon: false,
+      errorMessage: false,
+    },
+    password: {
+      value: "password",
+      hasError: false,
+      renderValidityIcon: false,
+      errorMessage: false,
+    },
+  };
+
   const storeRefreshedToken = useCallback(
     (newAuthToken: string) => {
       localStorage.setItem("authToken", newAuthToken);
@@ -141,6 +156,8 @@ const App = () => {
     return;
   }, []);
 
+  const initiateDemoSession = useCallback(() => {}, []);
+
   return (
     <Router>
       <DataContext.Provider
@@ -159,12 +176,13 @@ const App = () => {
           invalidateSession,
           updateUserProfile,
           storeRefreshedToken,
+          demoUserCredentials,
         }}
       >
         <ThemeProvider theme={theme}>
-          <GreyLayerWrapper>
+          {/* <GreyLayerWrapper>
             <div className={showGreyLayer ? "visible" : "invisible"} />
-          </GreyLayerWrapper>
+          </GreyLayerWrapper> */}
 
           <ApplicationWrapper>
             <NavBar />
@@ -203,6 +221,11 @@ const ApplicationWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.secondaryBlack};
   display: flex;
   height: 100vh;
+  box-sizing: border-box;
+  @media only screen and (max-width: 850px) {
+    height: 100svh;
+    max-height: 100svh;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -215,6 +238,7 @@ const ContentWrapper = styled.div`
   box-sizing: border-box;
   padding-top: 70px;
   @media only screen and (max-width: 850px) {
+    max-height: 100svh;
   }
 `;
 

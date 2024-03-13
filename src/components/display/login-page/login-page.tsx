@@ -164,6 +164,14 @@ const LoginPage = () => {
         formStateCopy.password.renderValidityIcon = true;
         formStateCopy.password.errorMessage = "Invalid email or password";
         setFormState(formStateCopy);
+      } else {
+        const formStateCopy = { ...formState };
+        formStateCopy.email.hasError = true;
+        formStateCopy.password.hasError = true;
+        formStateCopy.email.renderValidityIcon = true;
+        formStateCopy.password.renderValidityIcon = true;
+        formStateCopy.password.errorMessage = "Something went wrong...";
+        setFormState(formStateCopy);
       }
       return;
     }
@@ -296,7 +304,8 @@ export default LoginPage;
 
 const LoginPageBackground = styled(ColumnWrapper)`
   position: fixed;
-  height: fill-available;
+  height: 100vh;
+  box-sizing: border-box;
   width: 100vw;
   z-index: 2;
   align-items: center;
@@ -305,11 +314,15 @@ const LoginPageBackground = styled(ColumnWrapper)`
   left: 0px;
   color: ${(props) => props.theme.colors.primaryWhite};
   row-gap: 20px;
+  padding-top: 70px;
+  max-height: 100%;
+  overflow-y: hidden;
 `;
 
 const FormWrapper = styled(ColumnWrapper)`
   position: relative;
   box-sizing: border-box;
+  max-height: 100%;
   top: 50%;
   transform: translateY(-50%);
   width: 350px;

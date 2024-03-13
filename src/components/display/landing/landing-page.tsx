@@ -6,16 +6,14 @@ import { DataContext } from "../../../App";
 import { useContext } from "react";
 import LandingImage from "../../../assets/landingimage.png";
 import KeyFeaturesSection from "./key-features";
+import useDemoSession from "../../../hooks/useDemoSession";
 
 const LandingPage = () => {
-  const { setUserProfile } = useContext(DataContext);
+  const { setUserProfile, demoUserCredentials } = useContext(DataContext);
   const navigate = useNavigate();
 
-  const handleClickDemo = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setUserProfile({ email: "demo@demo.com", name: "Demo User" });
-    navigate("/home");
-  };
+  const { sendLoginRequest } = useDemoSession();
+
   return (
     <LandingPageWrapper>
       <CenteredDiv>
@@ -43,7 +41,7 @@ const LandingPage = () => {
                 <Button
                   type="fancy"
                   text="Try demo"
-                  onClick={handleClickDemo}
+                  onClick={() => sendLoginRequest(setUserProfile)}
                   icon={false}
                   color=""
                 />
@@ -51,8 +49,8 @@ const LandingPage = () => {
               <ButtonWrapper>
                 <Button
                   type="regular"
-                  text="Sign up"
-                  onClick={() => navigate("/sign-up")}
+                  text="Login"
+                  onClick={() => navigate("/login")}
                   icon={false}
                   color=""
                 />
@@ -78,7 +76,7 @@ const LandingPageWrapper = styled(ColumnWrapper)`
   width: 100%;
   overflow-x: hidden;
   max-width: 100%;
-  height: 100vh;
+  height: 100%;
   z-index: 2;
   overflow-y: auto;
   padding: 100px 50px 25px 50px;

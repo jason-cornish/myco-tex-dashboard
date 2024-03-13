@@ -10,6 +10,7 @@ const root = ReactDOM.createRoot(
 const GlobalStyle = createGlobalStyle`
   body {
     min-height: 100vh;
+    min-height: 100svh;
     min-height: fill-available;
     min-height: -webkit-fill-available; 
   }
@@ -21,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
 
   #root {
     height: 100vh;
+    height: 100svh;
     min-height: 100% !important;
   }
   
